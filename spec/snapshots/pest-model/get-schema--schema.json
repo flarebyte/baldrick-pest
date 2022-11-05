@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/baldrick-pest-schema",
+  "definitions": {
+    "baldrick-pest-schema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60,
+          "description": "A short title that summarizes this section of script"
+        },
+        "cases": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 1,
+                "default": ""
+              },
+              "title": {
+                "$ref": "#/definitions/baldrick-pest-schema/properties/title"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "description": "The main purpose of this section of script"
+              },
+              "motivation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "description": "The main reason why this section of script is needed"
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "$ref": "#/definitions/baldrick-pest-schema/properties/title"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "maxLength": 300,
+                      "description": "A https link to a webpage"
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "url"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Info about a link"
+                },
+                "description": "A list of useful links"
+              },
+              "stdin": {
+                "type": "object",
+                "properties": {
+                  "step": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10
+                  },
+                  "exitCode": {
+                    "type": "string",
+                    "enum": [
+                      "exit 0",
+                      "exit 1 .. n",
+                      "any"
+                    ],
+                    "default": "any"
+                  },
+                  "receiving": {
+                    "type": "string",
+                    "enum": [
+                      "stdout",
+                      "stderr",
+                      "stdout + stderr"
+                    ],
+                    "default": "stdout"
+                  }
+                },
+                "required": [
+                  "step"
+                ],
+                "additionalProperties": false,
+                "description": "Populate from stdout of step"
+              },
+              "run": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "description": "A line of shell script"
+              },
+              "expect": {
+                "type": "object",
+                "properties": {
+                  "exitCode": {
+                    "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/stdin/properties/exitCode"
+                  },
+                  "capture": {
+                    "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/stdin/properties/receiving"
+                  },
+                  "snapshot": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "pattern": "[a-z][\\d_a-z.-]+",
+                    "description": "A short name that can used as variable"
+                  }
+                },
+                "additionalProperties": false,
+                "description": "Expectation"
+              }
+            },
+            "required": [
+              "title",
+              "run"
+            ],
+            "additionalProperties": false,
+            "description": "Configuration for the batch shell script"
+          },
+          "propertyNames": {
+            "minLength": 1,
+            "maxLength": 60,
+            "pattern": "[a-z][\\d_a-z]+"
+          }
+        }
+      },
+      "required": [
+        "title",
+        "cases"
+      ],
+      "additionalProperties": false,
+      "description": "A list of tests for a given function"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+---
+testing:
+  title: baldrick-whisker
+cases:
+  object:
+    title: Merge json and Elm files
+    steps:
+      - run: echo prepare
+      - run: yarn cli object report/shell-tests/dest.json package.json tsconfig.json ispec/fixture/Example.elm
+        snapshot: run.json
+      - run: cat report/shell-tests/dest.json
