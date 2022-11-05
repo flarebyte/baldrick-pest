@@ -9,7 +9,13 @@ export const stringy = {
     .max(60)
     .regex(/[a-z][\d_a-z]+/)
     .describe('A short name that can used as variable'),
-  varValue: z
+  basename: z
+    .string()
+    .min(1)
+    .max(60)
+    .regex(/[a-z][\d_a-z.-]+/)
+    .describe('A short name that can used as variable'),
+ varValue: z
     .string()
     .min(1)
     .max(300)
@@ -37,6 +43,8 @@ export const stringy = {
   url: z.string().url().max(300).describe('A https link to a webpage'),
   path: z.string().max(300).describe('A relative path to a file'),
   propPath: z.string().max(300).describe('A dot prop path'),
+  exitCode: z.enum(['exit 0', 'exit 1 .. n', 'any']).default('any'),
+  capture: z.enum(['stdout', 'stderr', 'stdout + stderr']).default('stdout'),
 };
 export const safeParseField = (
   name: 'title' | 'filename' | string,
