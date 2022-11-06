@@ -1,7 +1,7 @@
 import { FullReport } from './reporter-model.js';
-import { ZestFileSuiteOpts } from './run-opts-model.js';
+import { PestFileSuiteOpts } from './run-opts-model.js';
 
-const expandReportTracker = (opts: ZestFileSuiteOpts): FullReport => {
+const expandReportTracker = (opts: PestFileSuiteOpts): FullReport => {
   const passes = opts.reportTracker.tests.filter(
     (test) => test.err === undefined
   );
@@ -27,7 +27,7 @@ const expandReportTracker = (opts: ZestFileSuiteOpts): FullReport => {
   };
 };
 
-export const reportMochaJson = async (opts: ZestFileSuiteOpts) => {
+export const reportMochaJson = async (opts: PestFileSuiteOpts) => {
   const reportFilename = opts.runOpts.inject.filename.getMochaFilename(
     opts.runOpts.specFile
   );
