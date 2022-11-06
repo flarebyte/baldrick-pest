@@ -34,7 +34,6 @@ const expect = z
 
 const stepShell = z
   .object({
-    name: z.string().max(1).default(''),
     title: stringy.title,
     description: stringy.description.optional(),
     motivation: stringy.motivation.optional(),
@@ -45,10 +44,20 @@ const stepShell = z
   })
   .describe('Configuration for the batch shell script');
 
+const useCase = z
+  .object({
+    name: z.string().max(1).default(''),
+    title: stringy.title,
+    description: stringy.description.optional(),
+    motivation: stringy.motivation.optional(),
+    links,
+    steps: z.array(stepShell),
+  })
+  .describe('Configuration for use case');
 const schema = z
   .object({
     title: stringy.title,
-    cases: z.record(stringy.customKey, stepShell),
+    cases: z.record(stringy.customKey, useCase),
   })
   .strict()
   .describe('A list of tests for a given function');

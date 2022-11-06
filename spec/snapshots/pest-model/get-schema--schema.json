@@ -60,72 +60,98 @@
                 },
                 "description": "A list of useful links"
               },
-              "stdin": {
-                "type": "object",
-                "properties": {
-                  "step": {
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 10
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "$ref": "#/definitions/baldrick-pest-schema/properties/title"
+                    },
+                    "description": {
+                      "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/description"
+                    },
+                    "motivation": {
+                      "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/motivation"
+                    },
+                    "links": {
+                      "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/links"
+                    },
+                    "stdin": {
+                      "type": "object",
+                      "properties": {
+                        "step": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 10
+                        },
+                        "exitCode": {
+                          "type": "string",
+                          "enum": [
+                            "exit 0",
+                            "exit 1 .. n",
+                            "any"
+                          ],
+                          "default": "any"
+                        },
+                        "receiving": {
+                          "type": "string",
+                          "enum": [
+                            "stdout",
+                            "stderr",
+                            "stdout + stderr"
+                          ],
+                          "default": "stdout"
+                        }
+                      },
+                      "required": [
+                        "step"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Populate from stdout of step"
+                    },
+                    "run": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300,
+                      "description": "A line of shell script"
+                    },
+                    "expect": {
+                      "type": "object",
+                      "properties": {
+                        "exitCode": {
+                          "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/steps/items/properties/stdin/properties/exitCode"
+                        },
+                        "capture": {
+                          "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/steps/items/properties/stdin/properties/receiving"
+                        },
+                        "snapshot": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 60,
+                          "pattern": "[a-z][\\d_a-z.-]+",
+                          "description": "A short name that can used as variable"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Expectation"
+                    }
                   },
-                  "exitCode": {
-                    "type": "string",
-                    "enum": [
-                      "exit 0",
-                      "exit 1 .. n",
-                      "any"
-                    ],
-                    "default": "any"
-                  },
-                  "receiving": {
-                    "type": "string",
-                    "enum": [
-                      "stdout",
-                      "stderr",
-                      "stdout + stderr"
-                    ],
-                    "default": "stdout"
-                  }
-                },
-                "required": [
-                  "step"
-                ],
-                "additionalProperties": false,
-                "description": "Populate from stdout of step"
-              },
-              "run": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 300,
-                "description": "A line of shell script"
-              },
-              "expect": {
-                "type": "object",
-                "properties": {
-                  "exitCode": {
-                    "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/stdin/properties/exitCode"
-                  },
-                  "capture": {
-                    "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/stdin/properties/receiving"
-                  },
-                  "snapshot": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 60,
-                    "pattern": "[a-z][\\d_a-z.-]+",
-                    "description": "A short name that can used as variable"
-                  }
-                },
-                "additionalProperties": false,
-                "description": "Expectation"
+                  "required": [
+                    "title",
+                    "run"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Configuration for the batch shell script"
+                }
               }
             },
             "required": [
               "title",
-              "run"
+              "steps"
             ],
             "additionalProperties": false,
-            "description": "Configuration for the batch shell script"
+            "description": "Configuration for use case"
           },
           "propertyNames": {
             "minLength": 1,
