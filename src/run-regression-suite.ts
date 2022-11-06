@@ -62,5 +62,6 @@ export const runRegressionSuite = async (opts: TestingRunOpts) => {
       }
       await runUseCase(ctx, useCase);
     }
+    console.log(ctx)
   }
 };
