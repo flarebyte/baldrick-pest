@@ -65,6 +65,8 @@ const schema = z
 export type PestModel = z.infer<typeof schema>;
 export type StepModel = z.infer<typeof stepShell>;
 
+export type UseCaseModel = z.infer<typeof useCase>;
+
 export type PestModelValidation = Result<PestModel, ValidationError[]>;
 
 export const safeParseBuild = (content: unknown): PestModelValidation => {
