@@ -20,7 +20,6 @@ const stdin = z
     exitCode: stringy.exitCode,
     receiving: stringy.capture,
   })
-  .optional()
   .describe('Populate from stdout of step');
 
 const expect = z
@@ -29,7 +28,6 @@ const expect = z
     capture: stringy.capture,
     snapshot: stringy.basename.optional(),
   })
-  .optional()
   .describe('Expectation');
 
 const stepShell = z
@@ -38,9 +36,9 @@ const stepShell = z
     description: stringy.description.optional(),
     motivation: stringy.motivation.optional(),
     links,
-    stdin,
+    stdin: stdin.optional(),
     run: lineShell,
-    expect,
+    expect: expect.optional(),
   })
   .describe('Configuration for the batch shell script');
 
@@ -66,6 +64,12 @@ export type PestModel = z.infer<typeof schema>;
 export type StepModel = z.infer<typeof stepShell>;
 
 export type UseCaseModel = z.infer<typeof useCase>;
+
+export type StdinModel = z.infer<typeof stdin>;
+
+export type ExpectModel = z.infer<typeof expect>;
+
+export type ExitCodeModel = z.infer<typeof stringy.exitCode>;
 
 export type PestModelValidation = Result<PestModel, ValidationError[]>;
 
