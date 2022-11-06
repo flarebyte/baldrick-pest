@@ -1,6 +1,6 @@
 import YAML from 'yaml';
 import fs from 'node:fs/promises';
-import { Result } from './railway.js';
+import { Result, fail } from './railway.js';
 export type LoadingStatus = Result<
   object,
   { message: string; filename: string }

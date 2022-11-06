@@ -7,11 +7,10 @@ export interface TestingRunOpts {
   reportDir: string;
   mochaJsonReport: boolean;
   specFile: string;
-  flags: string;
 }
 
 export interface PestFileSuiteOpts {
   reportTracker: ReportTracker;
-  testingModel: PestModel;
+  pestModel: PestModel;
   runOpts: TestingRunOpts;
 }
