@@ -1,3 +1,5 @@
+import { writeFile } from 'node:fs/promises';
+import { getMochaFilename } from './naming.js';
 import { FullReport } from './reporter-model.js';
 import { PestFileSuiteOpts } from './run-opts-model.js';
 
@@ -28,11 +30,9 @@ const expandReportTracker = (opts: PestFileSuiteOpts): FullReport => {
 };
 
 export const reportMochaJson = async (opts: PestFileSuiteOpts) => {
-  const reportFilename = opts.runOpts.inject.filename.getMochaFilename(
-    opts.runOpts.specFile
-  );
+  const reportFilename = getMochaFilename(opts.runOpts);
   const fullReport = expandReportTracker(opts);
-  await opts.runOpts.inject.io.writeContent(reportFilename, fullReport, {
-    parser: 'JSON',
+  await writeFile(reportFilename, JSON.stringify(fullReport, null, 2), {
+    encoding: 'utf8',
   });
 };
