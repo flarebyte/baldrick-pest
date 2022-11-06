@@ -1,8 +1,30 @@
 ---
-title: baldrick-whisker
+title: baldrick-pest
 cases:
-  object:
-    title: Merge json and Elm files
+  cat:
+    title: Simple cat is captured 
     steps:
-      - title: Load a file
+      - title: Read license file
         run: cat LICENSE
+        expect:
+          exitCode: exit 0
+          capture: stdout
+          snapshot: license.txt
+  count:
+    title: Pipe using stdin
+    steps:
+      - title: Read license file
+        run: cat LICENSE
+        expect:
+          exitCode: exit 0
+      - title: Count lines
+        run: wc -l
+        stdin:
+          step: 0
+          receiving: stdout
+          exitCode: exit 0
+        expect:
+          exitCode: exit 0
+          capture: stdout
+          snapshot: lines.txt
+
