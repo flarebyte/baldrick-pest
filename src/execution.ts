@@ -84,7 +84,7 @@ const getInputFromStdin = (
   }
 };
 
-export const executeCommandLine = async (
+export const executeStep = async (
   ctx: Context,
   step: StepModel
 ): Promise<ExecuteCommandLineResult> => {
