@@ -1,12 +1,16 @@
-import { PestModel, safeParseBuild } from './pest-model.js';
+import { ExpectModel, PestModel, safeParseBuild, StepModel } from './pest-model.js';
 import { readYaml } from './pest-file-io.js';
 import { ValidationError } from './format-message.js';
-import { andThen } from './railway.js';
+import { andThen, Result, succeed } from './railway.js';
 import { PestFileSuiteOpts, TestingRunOpts } from './run-opts-model.js';
 import { ReportTracker } from './reporter-model.js';
 import { executeStep } from './execution.js';
 import { UseCaseModel } from '../dist/pest-model.js';
-import { Context } from './context.js';
+import { Context, ShellResponse } from './context.js';
+import { checkSnapshot } from './snapshot-creator.js';
+import { getActualFromStdout, matchExitCode } from './matching-step.js';
+import { getSnapshotFilename } from './naming.js';
+import { readSnapshotFile } from './snapshot-io.js';
 const createReportTracker = (): ReportTracker => ({
   stats: {
     suites: 1,
@@ -24,10 +28,41 @@ type RunRegressionFailure =
   | { message: string; filename: string }
   | ValidationError[];
 
+type SnaphotResponse = Result<string, string>
+
+const checkResponseSnapshot = async (opts: TestingRunOpts, response: ShellResponse, expectation: ExpectModel, useCaseName: string): Promise<SnaphotResponse> => {
+  if (expectation.snapshot === undefined){
+    return succeed('ignore');
+  }
+  if (!matchExitCode(response.exitCode, expectation.exitCode)){
+    return fail('wrong exit code')
+  }
+
+  const actual = getActualFromStdout(response, expectation)
+
+  if (actual === undefined){
+    return fail('No actual defined')
+  }
+  const snaphotFileName = getSnapshotFilename(opts, useCaseName, expectation.snapshot)
+  const existingSnaphot = await readSnapshotFile(snaphotFileName)
+  await checkSnapshot(actual, snaphotFileName, expected)
+
+}
+
+const executeStepAndSnaphot = async (ctx: Context, step: StepModel) => {
+  console.log(step);
+  const stepResult = await executeStep(ctx, step);
+  const expect = step.expect;
+  if (expect !== undefined){
+    const snapshot = expect.snapshot
+    if (typeof snapshot === 'string'){
+      await checkSnapshot()
+    }
+  }
+};
 const runUseCase = async (ctx: Context, useCase: UseCaseModel) => {
   for (const step of useCase.steps) {
-    console.log(step)
-    await executeStep(ctx, step);
+    await executeStepAndSnaphot(ctx, step);
   }
 };
 
@@ -62,6 +97,6 @@ export const runRegressionSuite = async (opts: TestingRunOpts) => {
       }
       await runUseCase(ctx, useCase);
     }
-    console.log(ctx)
+    console.log(ctx);
   }
 };

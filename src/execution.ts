@@ -1,6 +1,7 @@
 import { execaCommand } from 'execa';
-import { Context } from './context.js';
-import { ExitCodeModel, StdinModel, StepModel } from './pest-model.js';
+import { Context, ShellResponse } from './context.js';
+import { getInputFromStdin } from './matching-step.js';
+import { StepModel } from './pest-model.js';
 import { Result, succeed, fail } from './railway.js';
 
 type ExecuteCommandLineFailedCategory =
@@ -12,10 +13,12 @@ type ExecuteCommandLineFailedCategory =
 type ExecuteCommandLineFailure = {
   category: ExecuteCommandLineFailedCategory;
   run: string;
+  response: ShellResponse;
 };
 
 type ExecuteCommandLineSuccess = {
   run: string;
+  response: ShellResponse;
 };
 type ExecuteCommandLineResult = Result<
   ExecuteCommandLineSuccess,
@@ -48,42 +51,6 @@ const toStatus = (params: {
   return 'success';
 };
 
-const matchExitCode = (actual: number, expected: ExitCodeModel): boolean => {
-  switch (expected) {
-    case 'any':
-      return true;
-    case 'exit 0':
-      return actual === 0;
-    case 'exit 1 .. n':
-      return actual >= 1;
-  }
-};
-
-const getInputFromStdin = (
-  ctx: Context,
-  stdin: StdinModel
-): string | undefined => {
-  const { receiving, step } = stdin;
-  if (step >= ctx.steps.length) {
-    return undefined;
-  }
-  const stepValue = ctx.steps[step];
-  if (stepValue === undefined) {
-    return undefined;
-  }
-  if (!matchExitCode(stepValue.exitCode, stdin.exitCode)) {
-    return undefined;
-  }
-  switch (receiving) {
-    case 'stdout':
-      return stepValue.stdout;
-    case 'stderr':
-      return stepValue.stderr;
-    case 'stdout + stderr':
-      return stepValue.stdouterr;
-  }
-};
-
 export const executeStep = async (
   ctx: Context,
   step: StepModel
@@ -105,12 +72,11 @@ export const executeStep = async (
   } = await execaCommand(run, { reject: false, ...maybeStdin, all: true });
 
   const status = toStatus({ exitCode, failed, isCanceled, timedOut, killed });
-
+  const response: ShellResponse = { exitCode, stdout, stderr, stdouterr: all };
+  ctx.steps.push(response);
   if (status === 'success') {
-    ctx.steps.push({ exitCode, stdout, stderr, stdouterr: all });
-    return succeed({ run });
+    return succeed({ run, response });
   } else {
-    ctx.steps.push({ exitCode, stdout, stderr, stdouterr: all });
-    return fail({ category: status, run });
+    return fail({ category: status, run, response });
   }
 };

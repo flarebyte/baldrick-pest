@@ -1,5 +1,4 @@
-import { diff } from 'jest-diff';
-import { StepExecuteResult } from './execution-context-model.js';
+import { diff } from 'jest-diff';ss
 import { writeSnapshotFile } from './snapshot-io.js';
 import { Result, fail, succeed } from './railway.js';
 
@@ -12,20 +11,20 @@ type SnapshotResult = Result<
   }
 >;
 
-export const checkSnapshot = async (
-  executeResult: StepExecuteResult & { status: 'success' },
-  snapshotFileName: string
+export const checkSnapshot = async ( 
+  actual: string,
+  snapshotFileName: string,
+  expected?: string,
 ): Promise<SnapshotResult> => {
-  const expected = executeResult.value.context.expected;
   if (expected === undefined) {
-    await writeSnapshotFile(snapshotFileName, executeResult.value.actual);
-    return succeed(executeResult.value.actual);
+    await writeSnapshotFile(snapshotFileName, actual);
+    return succeed(actual);
   }
 
-  const diffString = diff(expected, executeResult.value.actual);
+  const diffString = diff(expected, actual);
   if (diffString === null) {
     return fail({
-      actual: executeResult.value.actual,
+      actual,
       expected,
       message: 'Comparison with a null value',
     });
@@ -34,9 +33,9 @@ export const checkSnapshot = async (
     'Compared values have no visual difference'
   );
   return hasNoDifference
-    ? succeed(executeResult.value.actual)
+    ? succeed(actual)
     : fail({
-        actual: executeResult.value.actual,
+        actual,
         expected,
         message: diffString,
       });
