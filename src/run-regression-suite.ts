@@ -1,4 +1,9 @@
-import { ExpectModel, PestModel, safeParseBuild, StepModel } from './pest-model.js';
+import {
+  ExpectModel,
+  PestModel,
+  safeParseBuild,
+  StepModel,
+} from './pest-model.js';
 import { readYaml } from './pest-file-io.js';
 import { ValidationError } from './format-message.js';
 import { andThen, Result, succeed } from './railway.js';
@@ -28,41 +33,62 @@ type RunRegressionFailure =
   | { message: string; filename: string }
   | ValidationError[];
 
-type SnaphotResponse = Result<string, string>
+type SnaphotResponse = Result<
+  { message: string },
+  { message: string; difference: string }
+>;
 
-const checkResponseSnapshot = async (opts: TestingRunOpts, response: ShellResponse, expectation: ExpectModel, useCaseName: string): Promise<SnaphotResponse> => {
-  if (expectation.snapshot === undefined){
-    return succeed('ignore');
+const checkResponseSnapshot = async (params: {
+  opts: TestingRunOpts;
+  response: ShellResponse;
+  expectation: ExpectModel;
+  useCaseName: string;
+}): Promise<SnaphotResponse> => {
+  const { opts, response, expectation, useCaseName } = params;
+  if (expectation.snapshot === undefined) {
+    return succeed({ message: 'ignore' });
   }
-  if (!matchExitCode(response.exitCode, expectation.exitCode)){
-    return fail('wrong exit code')
+  if (!matchExitCode(response.exitCode, expectation.exitCode)) {
+    return fail({ message: 'wrong exit code' });
   }
 
-  const actual = getActualFromStdout(response, expectation)
+  const actual = getActualFromStdout(response, expectation);
 
-  if (actual === undefined){
-    return fail('No actual defined')
+  if (actual === undefined) {
+    return fail({ message: 'No actual defined' });
   }
-  const snaphotFileName = getSnapshotFilename(opts, useCaseName, expectation.snapshot)
-  const existingSnaphot = await readSnapshotFile(snaphotFileName)
-  await checkSnapshot(actual, snaphotFileName, expected)
-
-}
-
-const executeStepAndSnaphot = async (ctx: Context, step: StepModel) => {
-  console.log(step);
-  const stepResult = await executeStep(ctx, step);
-  const expect = step.expect;
-  if (expect !== undefined){
-    const snapshot = expect.snapshot
-    if (typeof snapshot === 'string'){
-      await checkSnapshot()
-    }
+  const snapshotFileName = getSnapshotFilename(
+    opts,
+    useCaseName,
+    expectation.snapshot
+  );
+  const existingSnapshotResult = await readSnapshotFile(snapshotFileName);
+  const expected =
+    existingSnapshotResult.status === 'success'
+      ? existingSnapshotResult.value
+      : undefined;
+  const compareResult = await checkSnapshot(actual, snapshotFileName, expected);
+  if (compareResult.status === 'success') {
+    return succeed({ message: 'Matches existing snapshot' });
+  } else {
+    return fail({
+      message: 'Differs from existing snapshot',
+      difference: compareResult.error.message,
+    });
   }
 };
-const runUseCase = async (ctx: Context, useCase: UseCaseModel) => {
+
+const executeStepAndSnaphot = async (opts: TestingRunOpts, ctx: Context, step: StepModel) => {
+  console.log(step);
+  const stepResult = await executeStep(ctx, step);
+  if (stepResult.status === 'success') {
+    const snapshot = expect.snapshot;
+    await checkResponseSnapshot({ opts, })
+  }
+};
+const runUseCase = async (opts: TestingRunOpts, ctx: Context, useCase: UseCaseModel) => {
   for (const step of useCase.steps) {
-    await executeStepAndSnaphot(ctx, step);
+    await executeStepAndSnaphot(opts, ctx, step);
   }
 };
 
