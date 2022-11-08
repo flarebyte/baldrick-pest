@@ -15,6 +15,7 @@ import { checkSnapshot } from './snapshot-creator.js';
 import { getActualFromStdout, matchExitCode } from './matching-step.js';
 import { getSnapshotFilename } from './naming.js';
 import { readSnapshotFile } from './snapshot-io.js';
+import { enhanceModel } from './model-enhancer.js';
 const createReportTracker = (): ReportTracker => ({
   stats: {
     suites: 1,
@@ -124,7 +125,7 @@ export const runRegressionSuite = async (opts: TestingRunOpts) => {
   if (modelResult.status === 'success') {
     const pestSuite: PestFileSuiteOpts = {
       reportTracker: createReportTracker(),
-      pestModel: modelResult.value,
+      pestModel: enhanceModel(modelResult.value),
       runOpts: opts,
     };
 
