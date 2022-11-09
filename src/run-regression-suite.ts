@@ -6,7 +6,7 @@ import {
 } from './pest-model.js';
 import { readYaml } from './pest-file-io.js';
 import { ValidationError } from './format-message.js';
-import { andThen, Result, succeed } from './railway.js';
+import { andThen, Result, succeed, fail } from './railway.js';
 import { PestFileSuiteOpts, TestingRunOpts } from './run-opts-model.js';
 import { ReportTracker } from './reporter-model.js';
 import { executeStep } from './execution.js';
