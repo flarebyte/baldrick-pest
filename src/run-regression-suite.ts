@@ -49,13 +49,13 @@ const checkResponseSnapshot = async (params: {
     return succeed({ message: 'ignore' });
   }
   if (!matchExitCode(response.exitCode, step.expect.exitCode)) {
-    return fail({ message: 'wrong exit code' });
+    return fail({ message: 'wrong exit code', difference: `Expected ${step.expect.exitCode} but got response.exitCode` });
   }
 
   const actual = getActualFromStdout(response, step.expect);
 
   if (actual === undefined) {
-    return fail({ message: 'No actual defined' });
+    return fail({ message: 'No actual defined', difference: '' });
   }
   const snapshotFileName = getSnapshotFilename(
     opts,
@@ -85,7 +85,6 @@ const executeStepAndSnaphot = async (params: {
   useCase: UseCaseModel;
 }) => {
   const { opts, ctx, step, useCase } = params;
-  console.log(step);
   const stepResult = await executeStep(ctx, step);
   if (stepResult.status === 'success') {
     await checkResponseSnapshot({
@@ -139,6 +138,5 @@ export const runRegressionSuite = async (opts: TestingRunOpts) => {
       }
       await runUseCase({ opts, ctx, useCase });
     }
-    console.log(ctx);
   }
 };
