@@ -16,6 +16,7 @@ import { getActualFromStdout, matchExitCode } from './matching-step.js';
 import { getSnapshotFilename } from './naming.js';
 import { readSnapshotFile } from './snapshot-io.js';
 import { enhanceModel } from './model-enhancer.js';
+import { reportCase, reportStartSuite, reportStopSuite } from './reporter.js';
 const createReportTracker = (): ReportTracker => ({
   stats: {
     suites: 1,
@@ -35,7 +36,7 @@ type RunRegressionFailure =
 
 type SnaphotResponse = Result<
   { message: string },
-  { message: string; difference: string }
+  { actual: string; expected: string; message: string }
 >;
 
 const checkResponseSnapshot = async (params: {
@@ -49,13 +50,17 @@ const checkResponseSnapshot = async (params: {
     return succeed({ message: 'ignore' });
   }
   if (!matchExitCode(response.exitCode, step.expect.exitCode)) {
-    return fail({ message: 'wrong exit code', difference: `Expected ${step.expect.exitCode} but got response.exitCode` });
+    return fail({
+      message: `The exit code is ${response.exitCode} but we expect ${step.expect.exitCode}`,
+      actual: `${response.exitCode}`,
+      expected: step.expect.exitCode,
+    });
   }
 
   const actual = getActualFromStdout(response, step.expect);
 
   if (actual === undefined) {
-    return fail({ message: 'No actual defined', difference: '' });
+    return fail({ message: 'No actual defined', actual: '', expected: '' });
   }
   const snapshotFileName = getSnapshotFilename(
     opts,
@@ -72,39 +77,78 @@ const checkResponseSnapshot = async (params: {
     return succeed({ message: 'Matches existing snapshot' });
   } else {
     return fail({
-      message: 'Differs from existing snapshot',
-      difference: compareResult.error.message,
+      message: compareResult.error.message,
+      actual: compareResult.error.actual,
+      expected: compareResult.error.expected,
     });
   }
 };
 
 const executeStepAndSnaphot = async (params: {
-  opts: TestingRunOpts;
+  opts: PestFileSuiteOpts;
   ctx: Context;
   step: StepModel;
   useCase: UseCaseModel;
 }) => {
   const { opts, ctx, step, useCase } = params;
+  const title = step.title;
+  const specFile = opts.runOpts.specFile;
+  const snapshotFile =
+    step.expect?.snapshot === undefined
+      ? undefined
+      : getSnapshotFilename(opts.runOpts, useCase.name, step.expect.snapshot);
+
+  const reportingCaseDefault = {
+    title,
+    fullTitle: title,
+    file: specFile,
+    sourceFile: 'not-applicable',
+    snapshotFile,
+  };
   const stepResult = await executeStep(ctx, step);
   if (stepResult.status === 'success') {
-    await checkResponseSnapshot({
-      opts,
+    const snapshotResponse = await checkResponseSnapshot({
+      opts: opts.runOpts,
       step,
       response: stepResult.value.response,
       useCase,
     });
+    if (snapshotResponse.status === 'success') {
+      reportCase(opts.reportTracker, {
+        ...reportingCaseDefault,
+        duration: 0,
+      });
+    } else {
+      const { message, actual, expected } = snapshotResponse.error;
+      reportCase(opts.reportTracker, {
+        ...reportingCaseDefault,
+        duration: 0,
+        err: {
+          code: 'ERR_ASSERTION',
+          message,
+          actual,
+          expected,
+          operator: 'strictEqual',
+        },
+      });
+    }
   }
 };
 
 const runUseCase = async (params: {
-  opts: TestingRunOpts;
+  opts: PestFileSuiteOpts;
   ctx: Context;
   useCase: UseCaseModel;
 }) => {
   const { opts, ctx, useCase } = params;
+  reportStartSuite(
+    `${opts.pestModel.title} - ${useCase.name}`,
+    'to be defined'
+  );
   for (const step of useCase.steps) {
     await executeStepAndSnaphot({ opts, ctx, step, useCase });
   }
+  reportStopSuite();
 };
 
 export const runRegressionSuite = async (opts: TestingRunOpts) => {
@@ -136,7 +180,7 @@ export const runRegressionSuite = async (opts: TestingRunOpts) => {
       if (useCase === undefined) {
         continue;
       }
-      await runUseCase({ opts, ctx, useCase });
+      await runUseCase({ opts: pestSuite, ctx, useCase });
     }
   }
 };
