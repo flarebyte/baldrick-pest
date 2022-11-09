@@ -11,10 +11,10 @@ type SnapshotResult = Result<
   }
 >;
 
-export const checkSnapshot = async ( 
+export const checkSnapshot = async (
   actual: string,
   snapshotFileName: string,
-  expected?: string,
+  expected?: string
 ): Promise<SnapshotResult> => {
   if (expected === undefined) {
     await writeSnapshotFile(snapshotFileName, actual);

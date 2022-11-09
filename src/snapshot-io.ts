@@ -1,7 +1,11 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { Result, fail, succeed } from './railway.js';
 
-type SnapshotStoreResult = Result<string, { filename: string; message: string }>;
+type SnapshotStoreResult = Result<
+  string,
+  { filename: string; message: string }
+>;
 
 export const readSnapshotFile = async (
   filename: string
@@ -24,4 +28,7 @@ export const readSnapshotFile = async (
 export const writeSnapshotFile = async (
   filename: string,
   content: string
-): Promise<void> => await writeFile(filename, content, { encoding: 'utf8' });
+): Promise<void> => {
+  await mkdir(dirname(filename), { recursive: true });
+  await writeFile(filename, content, { encoding: 'utf8' });
+};
