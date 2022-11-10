@@ -40,22 +40,27 @@ type SnaphotResponse = Result<
   { actual: string; expected: string; message: string }
 >;
 
-const checkResponseSnapshot = async (params: {
+const checkExpectationAndSnapshot = async (params: {
   opts: TestingRunOpts;
   response: ShellResponse;
   step: StepModel;
   useCase: UseCaseModel;
 }): Promise<SnaphotResponse> => {
   const { opts, response, step, useCase } = params;
-  if (step.expect === undefined || step.expect.snapshot === undefined) {
-    return succeed({ message: 'ignore' });
+  if (step.expect === undefined) {
+    return succeed({ message: 'Nothing is expected' });
   }
+
   if (!matchExitCode(response.exitCode, step.expect.exitCode)) {
     return fail({
       message: `The exit code is ${response.exitCode} but we expect ${step.expect.exitCode}`,
       actual: `${response.exitCode}`,
       expected: step.expect.exitCode,
     });
+  }
+
+  if (step.expect.snapshot === undefined) {
+    return succeed({ message: 'Nothing is expected' });
   }
 
   const actual = getActualFromStdout(response, step.expect);
@@ -108,10 +113,36 @@ const executeStepAndSnaphot = async (params: {
   };
   const stepResult = await executeStep(ctx, step);
   if (stepResult.status === 'success') {
-    const snapshotResponse = await checkResponseSnapshot({
+    const snapshotResponse = await checkExpectationAndSnapshot({
       opts: opts.runOpts,
       step,
       response: stepResult.value.response,
+      useCase,
+    });
+    if (snapshotResponse.status === 'success') {
+      reportCase(opts.reportTracker, {
+        ...reportingCaseDefault,
+        duration: 0,
+      });
+    } else {
+      const { message, actual, expected } = snapshotResponse.error;
+      reportCase(opts.reportTracker, {
+        ...reportingCaseDefault,
+        duration: 0,
+        err: {
+          code: 'ERR_ASSERTION',
+          message,
+          actual,
+          expected,
+          operator: 'strictEqual',
+        },
+      });
+    }
+  } else {
+    const snapshotResponse = await checkExpectationAndSnapshot({
+      opts: opts.runOpts,
+      step,
+      response: stepResult.error.response,
       useCase,
     });
     if (snapshotResponse.status === 'success') {

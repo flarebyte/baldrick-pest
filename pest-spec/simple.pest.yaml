@@ -7,8 +7,6 @@ cases:
       - title: Read license file
         run: cat LICENSE
         expect:
-          exitCode: exit 0
-          capture: stdout
           snapshot: license.txt
   count:
     title: Pipe using stdin
@@ -21,10 +19,12 @@ cases:
         run: wc -l
         stdin:
           step: 0
-          receiving: stdout
-          exitCode: exit 0
         expect:
-          exitCode: exit 0
-          capture: stdout
           snapshot: lines.txt
-
+  just-check-exit:
+    title: Just check the exit code
+    steps:
+      - title: Check a file that does not exist
+        run: ls this-file-does-not-exist.txt
+        expect:
+          exitCode: exit 1 .. n
