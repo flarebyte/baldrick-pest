@@ -16,7 +16,12 @@ import { getActualFromStdout, matchExitCode } from './matching-step.js';
 import { getSnapshotFilename } from './naming.js';
 import { readSnapshotFile } from './snapshot-io.js';
 import { enhanceModel } from './model-enhancer.js';
-import { reportCase, reportStartSuite, reportStopSuite } from './reporter.js';
+import {
+  reportCase,
+  reportSkipped,
+  reportStartSuite,
+  reportStopSuite,
+} from './reporter.js';
 import { reportMochaJson } from './mocha-json-reporter.js';
 const createReportTracker = (): ReportTracker => ({
   stats: {
@@ -89,13 +94,14 @@ const checkExpectationAndSnapshot = async (params: {
     });
   }
 };
+type ExecuteStepAndSnaphotResult = Result<string, string>;
 
 const executeStepAndSnaphot = async (params: {
   opts: PestFileSuiteOpts;
   ctx: Context;
   step: StepModel;
   useCase: UseCaseModel;
-}) => {
+}): Promise<ExecuteStepAndSnaphotResult> => {
   const { opts, ctx, step, useCase } = params;
   const title = step.title;
   const specFile = opts.runOpts.specFile;
@@ -124,6 +130,7 @@ const executeStepAndSnaphot = async (params: {
         ...reportingCaseDefault,
         duration: 0,
       });
+      return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
       reportCase(opts.reportTracker, {
@@ -137,6 +144,7 @@ const executeStepAndSnaphot = async (params: {
           operator: 'strictEqual',
         },
       });
+      return fail(message);
     }
   } else {
     const snapshotResponse = await checkExpectationAndSnapshot({
@@ -150,6 +158,7 @@ const executeStepAndSnaphot = async (params: {
         ...reportingCaseDefault,
         duration: 0,
       });
+      return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
       reportCase(opts.reportTracker, {
@@ -163,6 +172,7 @@ const executeStepAndSnaphot = async (params: {
           operator: 'strictEqual',
         },
       });
+      return fail(message);
     }
   }
 };
@@ -177,8 +187,21 @@ const runUseCase = async (params: {
     `${opts.pestModel.title} - ${useCase.name}`,
     'to be defined'
   );
+  let oneStepHasFailed = false;
   for (const step of useCase.steps) {
-    await executeStepAndSnaphot({ opts, ctx, step, useCase });
+    if (oneStepHasFailed) {
+      reportSkipped(step.title, 'A previous step has failed unexpectedly');
+      continue;
+    }
+    const stepResult = await executeStepAndSnaphot({
+      opts,
+      ctx,
+      step,
+      useCase,
+    });
+    if (stepResult.status === 'failure') {
+      oneStepHasFailed = true;
+    }
   }
   reportStopSuite();
 };
