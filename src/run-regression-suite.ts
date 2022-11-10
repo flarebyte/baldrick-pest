@@ -17,6 +17,7 @@ import { getSnapshotFilename } from './naming.js';
 import { readSnapshotFile } from './snapshot-io.js';
 import { enhanceModel } from './model-enhancer.js';
 import { reportCase, reportStartSuite, reportStopSuite } from './reporter.js';
+import { reportMochaJson } from './mocha-json-reporter.js';
 const createReportTracker = (): ReportTracker => ({
   stats: {
     suites: 1,
@@ -181,6 +182,10 @@ export const runRegressionSuite = async (opts: TestingRunOpts) => {
         continue;
       }
       await runUseCase({ opts: pestSuite, ctx, useCase });
+    }
+
+    if (opts.mochaJsonReport) {
+      await reportMochaJson(pestSuite);
     }
   }
 };
