@@ -1,28 +1,28 @@
+import { Context, ShellResponse } from './context.js';
+import { executeStep } from './execution.js';
+import { ValidationError } from './format-message.js';
+import { getActualFromStdout, matchExitCode } from './matching-step.js';
+import { reportMochaJson } from './mocha-json-reporter.js';
+import { enhanceModel } from './model-enhancer.js';
+import { getSnapshotFilename } from './naming.js';
+import { readYaml } from './pest-file-io.js';
 import {
   PestModel,
   safeParseBuild,
   StepModel,
-  UseCaseModel,
+  UseCaseModel
 } from './pest-model.js';
-import { readYaml } from './pest-file-io.js';
-import { ValidationError } from './format-message.js';
-import { andThen, Result, succeed, fail } from './railway.js';
-import { PestFileSuiteOpts, TestingRunOpts } from './run-opts-model.js';
+import { andThen, fail, Result, succeed } from './railway.js';
 import { ReportTracker } from './reporter-model.js';
-import { executeStep } from './execution.js';
-import { Context, ShellResponse } from './context.js';
-import { checkSnapshot } from './snapshot-creator.js';
-import { getActualFromStdout, matchExitCode } from './matching-step.js';
-import { getSnapshotFilename } from './naming.js';
-import { readSnapshotFile } from './snapshot-io.js';
-import { enhanceModel } from './model-enhancer.js';
 import {
   reportCase,
   reportSkipped,
   reportStartSuite,
-  reportStopSuite,
+  reportStopSuite
 } from './reporter.js';
-import { reportMochaJson } from './mocha-json-reporter.js';
+import { PestFileSuiteOpts, TestingRunOpts } from './run-opts-model.js';
+import { checkSnapshot } from './snapshot-creator.js';
+import { readSnapshotFile } from './snapshot-io.js';
 const createReportTracker = (): ReportTracker => ({
   stats: {
     suites: 1,
@@ -187,7 +187,7 @@ const runUseCase = async (params: {
   const { opts, ctx, useCase } = params;
   reportStartSuite(
     `${opts.pestModel.title} - ${useCase.name}`,
-    'to be defined'
+    opts.runOpts.specFile
   );
   let oneStepHasFailed = false;
   for (const step of useCase.steps) {
