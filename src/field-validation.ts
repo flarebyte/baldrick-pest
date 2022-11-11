@@ -14,13 +14,7 @@ export const stringy = {
     .min(1)
     .max(60)
     .regex(/[a-z][\d_a-z.-]+/)
-    .describe('A short name that can used as variable'),
- varValue: z
-    .string()
-    .min(1)
-    .max(300)
-    .regex(/(([\d._a-z]+)|(\[\d+]))+/)
-    .describe('A dot prop path'),
+    .describe('A short name that can used as part of a file name including the extension'),
   title: z
     .string()
     .trim()
@@ -34,12 +28,18 @@ export const stringy = {
     .min(1)
     .max(300)
     .describe('The main purpose of this section of script'),
+  todo: z
+    .string()
+    .trim()
+    .min(1)
+    .max(300)
+    .describe('A description of the todo specification'),
   motivation: z
     .string()
     .trim()
     .min(1)
     .max(300)
-    .describe('The main reason why this section of script is needed'),
+    .describe('The main reason why this step is needed'),
   url: z.string().url().max(300).describe('A https link to a webpage'),
   path: z.string().max(300).describe('A relative path to a file'),
   propPath: z.string().max(300).describe('A dot prop path'),

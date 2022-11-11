@@ -48,17 +48,21 @@ const useCase = z
     title: stringy.title,
     description: stringy.description.optional(),
     motivation: stringy.motivation.optional(),
+    todo: stringy.todo.optional(),
     links,
     steps: z.array(stepShell),
   })
-  .describe('Configuration for use case');
+  .describe('Configuration for the use case');
 const schema = z
   .object({
     title: stringy.title,
+    description: stringy.description.optional(),
+    motivation: stringy.motivation.optional(),
+    links,
     cases: z.record(stringy.customKey, useCase),
   })
   .strict()
-  .describe('A list of tests for a given function');
+  .describe('A list of tests that run shells commands');
 
 export type PestModel = z.infer<typeof schema>;
 export type StepModel = z.infer<typeof stepShell>;

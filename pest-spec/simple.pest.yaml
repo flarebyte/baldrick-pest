@@ -1,5 +1,6 @@
 ---
 title: baldrick-pest
+description: Test of baldrick-pest CLI
 cases:
   cat:
     title: Simple cat is captured 
@@ -32,3 +33,7 @@ cases:
         run: echo "end of just-check-exit"
         expect:
           exitCode: any
+  todo:
+    title: Todo use case
+    todo: Description of future implementation
+    steps: []

@@ -10,7 +10,7 @@ import {
   PestModel,
   safeParseBuild,
   StepModel,
-  UseCaseModel
+  UseCaseModel,
 } from './pest-model.js';
 import { andThen, fail, Result, succeed } from './railway.js';
 import { ReportTracker } from './reporter-model.js';
@@ -18,7 +18,8 @@ import {
   reportCaseStep,
   reportSkipped,
   reportStartSuite,
-  reportStopSuite
+  reportStopSuite,
+  reportTodo,
 } from './reporter.js';
 import { PestFileSuiteOpts, TestingRunOpts } from './run-opts-model.js';
 import { checkSnapshot } from './snapshot-creator.js';
@@ -190,20 +191,24 @@ const runUseCase = async (params: {
     opts.runOpts.specFile
   );
   let oneStepHasFailed = false;
-  for (const step of useCase.steps) {
-    if (oneStepHasFailed) {
-      reportSkipped(step.title, 'A previous step has failed unexpectedly');
-      continue;
+  if (useCase.todo === undefined) {
+    for (const step of useCase.steps) {
+      if (oneStepHasFailed) {
+        reportSkipped(step.title, 'A previous step has failed unexpectedly');
+        continue;
+      }
+      const stepResult = await executeStepAndSnaphot({
+        opts,
+        ctx,
+        step,
+        useCase,
+      });
+      if (stepResult.status === 'failure') {
+        oneStepHasFailed = true;
+      }
     }
-    const stepResult = await executeStepAndSnaphot({
-      opts,
-      ctx,
-      step,
-      useCase,
-    });
-    if (stepResult.status === 'failure') {
-      oneStepHasFailed = true;
-    }
+  } else {
+    reportTodo(useCase.todo);
   }
   reportStopSuite();
 };
