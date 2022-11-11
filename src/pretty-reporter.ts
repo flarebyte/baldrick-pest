@@ -68,7 +68,7 @@ const addSnapshot = (snapshotFile?: string) =>
 const addRun = (run: string) =>
   run.length < 20 ? colors.run(run) : colors.run(run.substring(0, 20) + '...');
 
-export const prettyReportCase = (reportingCase: ReportingCase) => {
+export const prettyReportStepCase = (reportingCase: ReportingCase) => {
   if (reportingCase.err === undefined) {
     console.error(
       colors.pass('✓ PASS') +

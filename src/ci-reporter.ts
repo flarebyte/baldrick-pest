@@ -3,7 +3,7 @@ import { ReportingCase } from './reporter-model.js';
 export const ciReportStartSuite = (title: string, secondary: string) => {
   console.group(`${title}; ${secondary}`);
 };
-export const ciReportCase = (reportingCase: ReportingCase) => {
+export const ciReportStepCase = (reportingCase: ReportingCase) => {
   if (reportingCase.err === undefined) {
     console.error(
       `✓ PASS ${reportingCase.title} ${reportingCase.snapshotFile}`

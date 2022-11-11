@@ -15,7 +15,7 @@ import {
 import { andThen, fail, Result, succeed } from './railway.js';
 import { ReportTracker } from './reporter-model.js';
 import {
-  reportCase,
+  reportCaseStep,
   reportSkipped,
   reportStartSuite,
   reportStopSuite
@@ -128,14 +128,14 @@ const executeStepAndSnaphot = async (params: {
       useCase,
     });
     if (snapshotResponse.status === 'success') {
-      reportCase(opts.reportTracker, {
+      reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
       });
       return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
-      reportCase(opts.reportTracker, {
+      reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
         err: {
@@ -156,14 +156,14 @@ const executeStepAndSnaphot = async (params: {
       useCase,
     });
     if (snapshotResponse.status === 'success') {
-      reportCase(opts.reportTracker, {
+      reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
       });
       return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
-      reportCase(opts.reportTracker, {
+      reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
         err: {
