@@ -2,7 +2,8 @@
   "name": "baldrick-pest",
   "description": "Cunning regression tests for CLI applications",
   "keywords": [
-    "CLI"
+    "CLI",
+    "Regression tests"
   ],
   "version": "0.1.0",
   "author": {
