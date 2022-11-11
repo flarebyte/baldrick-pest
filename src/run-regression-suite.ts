@@ -114,10 +114,12 @@ const executeStepAndSnaphot = async (params: {
     title,
     fullTitle: title,
     file: specFile,
-    sourceFile: 'not-applicable',
+    run: step.run,
     snapshotFile,
   };
+  const started = Date.now();
   const stepResult = await executeStep(ctx, step);
+  const duration = Date.now() - started;
   if (stepResult.status === 'success') {
     const snapshotResponse = await checkExpectationAndSnapshot({
       opts: opts.runOpts,
@@ -128,14 +130,14 @@ const executeStepAndSnaphot = async (params: {
     if (snapshotResponse.status === 'success') {
       reportCase(opts.reportTracker, {
         ...reportingCaseDefault,
-        duration: 0,
+        duration,
       });
       return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
       reportCase(opts.reportTracker, {
         ...reportingCaseDefault,
-        duration: 0,
+        duration,
         err: {
           code: 'ERR_ASSERTION',
           message,
@@ -156,14 +158,14 @@ const executeStepAndSnaphot = async (params: {
     if (snapshotResponse.status === 'success') {
       reportCase(opts.reportTracker, {
         ...reportingCaseDefault,
-        duration: 0,
+        duration,
       });
       return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
       reportCase(opts.reportTracker, {
         ...reportingCaseDefault,
-        duration: 0,
+        duration,
         err: {
           code: 'ERR_ASSERTION',
           message,

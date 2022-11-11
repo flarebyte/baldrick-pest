@@ -7,6 +7,9 @@ const colors = {
   get log() {
     return chalk.gray;
   },
+  get run() {
+    return chalk.blue.dim;
+  },
   get section() {
     return chalk.bold;
   },
@@ -62,12 +65,17 @@ export const prettyReportSkipped = (title: string, reason: string) => {
 const addSnapshot = (snapshotFile?: string) =>
   snapshotFile === undefined ? '' : '   ' + colors.log('📷 ' + snapshotFile);
 
+const addRun = (run: string) =>
+  run.length < 20 ? colors.run(run) : colors.run(run.substring(0, 20) + '...');
+
 export const prettyReportCase = (reportingCase: ReportingCase) => {
   if (reportingCase.err === undefined) {
     console.error(
       colors.pass('✓ PASS') +
         ' ' +
         colors.title(reportingCase.title) +
+        ' ' +
+        addRun(reportingCase.run) +
         addSnapshot(reportingCase.snapshotFile)
     );
     return;
@@ -77,6 +85,7 @@ export const prettyReportCase = (reportingCase: ReportingCase) => {
       colors.error('✗ FAIL') +
         ' ' +
         colors.title(reportingCase.title) +
+        addRun(reportingCase.run) +
         addSnapshot(reportingCase.snapshotFile)
     );
     console.info(reportingCase.err.message);
@@ -91,6 +100,7 @@ export const prettyReportCase = (reportingCase: ReportingCase) => {
       colors.error('✗ FAIL') +
         ' ' +
         colors.title(reportingCase.title) +
+        addRun(reportingCase.run) +
         addSnapshot(reportingCase.snapshotFile)
     );
     console.info(reportingCase.err.message);

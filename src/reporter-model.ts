@@ -19,7 +19,7 @@ export interface ReportingCase {
   title: string;
   fullTitle: string;
   file: string;
-  sourceFile: string;
+  run: string;
   snapshotFile?: string;
   duration: number;
   err?: ReportingError;
