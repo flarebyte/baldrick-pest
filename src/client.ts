@@ -1,47 +1,46 @@
 import { Command } from 'commander';
-import { AnyDataValue, BuildModel, safeParseBuild } from './pest-model.js';
-import { createCommands } from './commands-creator.js';
-import { buildFilePath } from './env-variables.js';
-import { readYaml } from './file-io.js';
-import { ValidationError } from './format-message.js';
-import { andThen } from './railway.js';
+import { runRegressionSuite } from './run-regression-suite.js';
 import { version } from './version.js';
 
-const exitWithError = (message: string, value?: object) => {
-  value === undefined ? console.error(message) : console.error(message, value);
-  process.exit(1); // eslint-disable-line  unicorn/no-process-exit
-};
+const program = new Command();
+program
+  .name('baldrick-pest')
+  .description('CLI to run shell regression tests')
+  .version(version);
+
+program
+  .command('test')
+  .description('Run regression test')
+  .option(
+    '-f, --spec-file <filename>',
+    'Test file in baldrick-pest YAML format',
+    'pest-spec/index.pest.yaml'
+  )
+  .option(
+    '-dir, --spec-dir <directory>',
+    'Directory with the pest spec files',
+    'pest-spec'
+  )
+  .option(
+    '-rep, --report-dir <directory>',
+    'Directory for the reports',
+    'report'
+  )
+  .option(
+    '-snap, --snapshot-dir <directory>',
+    'Directory for the snapshots',
+    'pest-spec/snapshots'
+  )
+  .option('-mocha, --mocha-json-report', 'Enable mocha reports', true)
+  .action(runRegressionSuite);
 
 export async function runClient() {
   try {
-    await unsafeRunClient();
-    console.log(`✓ baldrick-broth is done. Version ${version}`);
-  } catch (error) {
-    exitWithError((error instanceof Error && error.message) || `${error}`);
-  }
-}
-
-type RunClientFailure =
-  | { message: string; filename: string }
-  | ValidationError[];
-/**
- * Run the client without trapping all exceptions
- */
-async function unsafeRunClient() {
-  const buildReadingResult = await readYaml(buildFilePath);
-  const buildModelResult = andThen<AnyDataValue, BuildModel, RunClientFailure>(
-    safeParseBuild
-  )(buildReadingResult);
-
-  if (buildModelResult.status === 'failure') {
-    exitWithError(
-      `Loading and parsing the baldrick-broth build file ${buildFilePath} failed`,
-      buildModelResult.error
-    );
-  }
-  if (buildModelResult.status === 'success') {
-    const program = new Command();
-    createCommands(program, buildModelResult);
     program.parseAsync();
+    console.log(`✓ Done. Version ${version}`);
+  } catch (error) {
+    console.log('baldrick-pest will exit with error code 1');
+    console.error(error);
+    process.exit(1); // eslint-disable-line  unicorn/no-process-exit
   }
 }

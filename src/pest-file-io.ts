@@ -1,9 +1,8 @@
 import YAML from 'yaml';
 import fs from 'node:fs/promises';
-import { Result } from './railway.js';
-import { AnyDataValue } from './pest-model.js';
+import { Result, fail } from './railway.js';
 export type LoadingStatus = Result<
-  AnyDataValue,
+  object,
   { message: string; filename: string }
 >;
 

@@ -1,0 +1,39 @@
+---
+title: baldrick-pest
+description: Test of baldrick-pest CLI
+cases:
+  cat:
+    title: Simple cat is captured 
+    steps:
+      - title: Read license file
+        run: cat LICENSE
+        expect:
+          snapshot: license.txt
+  count:
+    title: Pipe using stdin
+    steps:
+      - title: Read license file
+        run: cat LICENSE
+        expect:
+          exitCode: exit 0
+      - title: Count lines
+        run: wc -l
+        stdin:
+          step: 0
+        expect:
+          snapshot: lines.txt
+  just-check-exit:
+    title: Just check the exit code
+    steps:
+      - title: Check a file that does not exist
+        run: ls this-file-does-not-exist.txt
+        expect:
+          exitCode: exit 1 .. n
+      - title: simple display
+        run: echo "end of just-check-exit"
+        expect:
+          exitCode: any
+  todo:
+    title: Todo use case
+    todo: Description of future implementation
+    steps: []

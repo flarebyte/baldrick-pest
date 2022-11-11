@@ -4,9 +4,7 @@
 
 ![npm type definitions](https://img.shields.io/npm/types/baldrick-pest) ![node-current](https://img.shields.io/node/v/baldrick-pest) ![NPM](https://img.shields.io/npm/l/baldrick-pest)
 
-> 
-
-Cunning regression tests for CLI applications
+> Cunning regression tests for CLI applications
 
 ## Documentation and links
 
