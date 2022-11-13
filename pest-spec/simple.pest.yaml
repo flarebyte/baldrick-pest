@@ -33,6 +33,17 @@ cases:
         run: echo "end of just-check-exit"
         expect:
           exitCode: any
+  quoting:
+    title: Use quote as part of the command
+    steps:
+      - title: Read license file
+        run: cat LICENSE
+      - title: Remove line with copyright
+        run: sed "/Copyright/d"
+        stdin:
+          step: 0
+        expect:
+          snapshot: license.txt
   todo:
     title: Todo use case
     todo: Description of future implementation

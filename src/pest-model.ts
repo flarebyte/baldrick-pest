@@ -24,7 +24,7 @@ const stdin = z
 
 const expect = z
   .object({
-    exitCode: stringy.exitCode,
+    exitCode: stringy.exitCode.default('exit 0'),
     capture: stringy.capture,
     snapshot: stringy.basename.optional(),
   })
