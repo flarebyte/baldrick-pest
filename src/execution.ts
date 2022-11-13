@@ -14,6 +14,7 @@ type ExecuteCommandLineFailure = {
   category: ExecuteCommandLineFailedCategory;
   run: string;
   response: ShellResponse;
+  message?: string;
 };
 
 type ExecuteCommandLineSuccess = {
@@ -57,8 +58,20 @@ export const executeStep = async (
 ): Promise<ExecuteCommandLineResult> => {
   const { run, stdin } = step;
 
-  const maybeStdin =
-    stdin === undefined ? {} : { input: getInputFromStdin(ctx, stdin) };
+  let maybeStdin = {};
+  if (stdin !== undefined) {
+    const stdinInputResult = getInputFromStdin(ctx, stdin);
+    if (stdinInputResult.status === 'success') {
+      maybeStdin = { input: stdinInputResult.value };
+    } else {
+      return fail({
+        category: 'failed',
+        run,
+        response: { exitCode: 100 },
+        message: stdinInputResult.error.message,
+      });
+    }
+  }
 
   const {
     stdout,

@@ -164,14 +164,19 @@ const executeStepAndSnaphot = async (params: {
       return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
-      const stdouterr = stepResult.error.response.stdouterr;
+      const stepCommandMessage =
+        stepResult.error.message === undefined
+          ? stepResult.error.response.stdouterr
+          : stepResult.error.message;
       reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
         err: {
           code: 'ERR_ASSERTION',
           message:
-            stdouterr === undefined ? message : `${message}\n${stdouterr}`,
+            stepCommandMessage === undefined
+              ? message
+              : `${message}\n${stepCommandMessage}`,
           actual,
           expected,
           operator: 'strictEqual',
@@ -188,6 +193,7 @@ const runUseCase = async (params: {
   useCase: UseCaseModel;
 }) => {
   const { opts, ctx, useCase } = params;
+  ctx.steps.length = 0;
   reportStartSuite(
     `${opts.pestModel.title} - ${useCase.name}`,
     opts.runOpts.specFile
