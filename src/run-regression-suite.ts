@@ -164,12 +164,14 @@ const executeStepAndSnaphot = async (params: {
       return succeed('Successful');
     } else {
       const { message, actual, expected } = snapshotResponse.error;
+      const stdouterr = stepResult.error.response.stdouterr;
       reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
         err: {
           code: 'ERR_ASSERTION',
-          message,
+          message:
+            stdouterr === undefined ? message : `${message}\n${stdouterr}`,
           actual,
           expected,
           operator: 'strictEqual',

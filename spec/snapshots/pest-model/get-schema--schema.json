@@ -135,7 +135,8 @@
                       "type": "object",
                       "properties": {
                         "exitCode": {
-                          "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/steps/items/properties/stdin/properties/exitCode"
+                          "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/steps/items/properties/stdin/properties/exitCode",
+                          "default": "exit 0"
                         },
                         "capture": {
                           "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/steps/items/properties/stdin/properties/receiving"
