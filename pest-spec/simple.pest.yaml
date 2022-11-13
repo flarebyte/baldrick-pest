@@ -44,17 +44,6 @@ cases:
           step: 0
         expect:
           snapshot: license.txt
-  unknown-step:
-    title: Use quote as part of the command
-    steps:
-      - title: Read license file
-        run: cat CODE_OF_CONDUCT.md
-      - title: Check wrong step
-        run: cat
-        stdin:
-          step: 1
-        expect:
-          snapshot: no-step.txt
   todo:
     title: Todo use case
     todo: Description of future implementation
