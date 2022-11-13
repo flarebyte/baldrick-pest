@@ -39,7 +39,7 @@ cases:
       - title: Read license file
         run: cat LICENSE
       - title: Remove line with copyright
-        run: sed "/Copyright/d"
+        run: sed /Copyright/d
         stdin:
           step: 0
         expect:
