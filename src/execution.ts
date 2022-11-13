@@ -67,7 +67,7 @@ export const executeStep = async (
       return fail({
         category: 'failed',
         run,
-        response: { exitCode: 100 },
+        response: { exitCode: 6637 },
         message: stdinInputResult.error.message,
       });
     }

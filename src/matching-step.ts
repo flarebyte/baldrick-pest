@@ -24,16 +24,16 @@ export const getInputFromStdin = (
   const { receiving, step } = stdin;
   if (step >= ctx.steps.length) {
     return fail({
-      message: `At this stage we have run only ${ctx.steps.length} step(s) but trying to read step at index ${step}`,
+      message: `At this stage we have run only ${ctx.steps.length} step(s) but trying to read step at index ${step} (832276)`,
     });
   }
   const stepValue = ctx.steps[step];
   if (stepValue === undefined) {
-    return fail({ message: `Step ${step} has no defined output` });
+    return fail({ message: `Step ${step} has no defined output  (411665)`});
   }
   if (!matchExitCode(stepValue.exitCode, stdin.exitCode)) {
     return fail({
-      message: `Was expecting ${stdin.exitCode} but go ${stepValue.exitCode}`,
+      message: `Was expecting ${stdin.exitCode} but go ${stepValue.exitCode} (822595)`,
     });
   }
   switch (receiving) {
