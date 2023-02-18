@@ -13,7 +13,10 @@ export type ReportingError =
       actual: string;
       expected: string;
       operator: 'strictEqual';
-    };
+    }
+  | {
+    code: 'PASS';
+  };
 
 export interface ReportingCase {
   title: string;
@@ -22,7 +25,7 @@ export interface ReportingCase {
   run: string;
   snapshotFile?: string;
   duration: number;
-  err?: ReportingError;
+  err: ReportingError;
 }
 
 export interface ReportingStats {

@@ -132,6 +132,7 @@ const executeStepAndSnaphot = async (params: {
       reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
+        err: { code: 'PASS'}
       });
       return succeed('Successful');
     } else {
@@ -160,6 +161,7 @@ const executeStepAndSnaphot = async (params: {
       reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
+        err: {code: 'PASS'}
       });
       return succeed('Successful');
     } else {
