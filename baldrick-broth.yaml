@@ -2,7 +2,7 @@
 model:
   project:
     title: Build automation tool and task runner
-    version: 0.5.0
+    version: 0.6.0
     description:
       Take your developer workflow to the next level with a custom CLI with relevant documentation for running your task
   readme:
