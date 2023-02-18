@@ -29,7 +29,7 @@ export const getInputFromStdin = (
   }
   const stepValue = ctx.steps[step];
   if (stepValue === undefined) {
-    return fail({ message: `Step ${step} has no defined output  (411665)`});
+    return fail({ message: `Step ${step} has no defined output  (411665)` });
   }
   if (!matchExitCode(stepValue.exitCode, stdin.exitCode)) {
     return fail({

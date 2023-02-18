@@ -1,11 +1,11 @@
 export interface ShellResponse {
-    exitCode: number;
-    stdout?: string;
-    stderr?: string;
+  exitCode: number;
+  stdout?: string;
+  stderr?: string;
 
-    stdouterr?: string;
+  stdouterr?: string;
 }
 
 export interface Context {
-    steps: ShellResponse[];
+  steps: ShellResponse[];
 }

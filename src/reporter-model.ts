@@ -15,8 +15,8 @@ export type ReportingError =
       operator: 'strictEqual';
     }
   | {
-    code: 'PASS';
-  };
+      code: 'PASS';
+    };
 
 export interface ReportingCase {
   title: string;
