@@ -25,7 +25,9 @@ export const reportCaseStep = (
 ) => {
   const duration = Date.now() - reportTracker.stats.duration;
   reportTracker.tests.push({ ...reportingCase, duration });
-  return isCI ? ciReportStepCase(reportingCase) : prettyReportStepCase(reportingCase);
+  return isCI
+    ? ciReportStepCase(reportingCase)
+    : prettyReportStepCase(reportingCase);
 };
 
 export const reportTodo = (title: string) =>

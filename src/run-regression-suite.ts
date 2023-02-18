@@ -85,15 +85,13 @@ const checkExpectationAndSnapshot = async (params: {
       ? existingSnapshotResult.value
       : undefined;
   const compareResult = await checkSnapshot(actual, snapshotFileName, expected);
-  if (compareResult.status === 'success') {
-    return succeed({ message: 'Matches existing snapshot' });
-  } else {
-    return fail({
-      message: compareResult.error.message,
-      actual: compareResult.error.actual,
-      expected: compareResult.error.expected,
-    });
-  }
+  return compareResult.status === 'success'
+    ? succeed({ message: 'Matches existing snapshot' })
+    : fail({
+        message: compareResult.error.message,
+        actual: compareResult.error.actual,
+        expected: compareResult.error.expected,
+      });
 };
 type ExecuteStepAndSnaphotResult = Result<string, string>;
 
@@ -132,6 +130,7 @@ const executeStepAndSnaphot = async (params: {
       reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
+        err: { code: 'PASS' },
       });
       return succeed('Successful');
     } else {
@@ -160,6 +159,7 @@ const executeStepAndSnaphot = async (params: {
       reportCaseStep(opts.reportTracker, {
         ...reportingCaseDefault,
         duration,
+        err: { code: 'PASS' },
       });
       return succeed('Successful');
     } else {

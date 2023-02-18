@@ -16,6 +16,6 @@ export const getSnapshotFilename = (
 
 export const getMochaFilename = (opts: TestingRunOpts): string => {
   const specFileBase = basename(opts.specFile).replace('.pest.yaml', '');
-  const reportFilename = `report-${specFileBase}.mocha.json`;
+  const reportFilename = `report-${specFileBase}.pest.mocha.json`;
   return join(opts.reportDir, reportFilename);
 };

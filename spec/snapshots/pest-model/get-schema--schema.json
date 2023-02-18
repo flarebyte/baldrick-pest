@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
   "$ref": "#/definitions/baldrick-pest-schema",
   "definitions": {
     "baldrick-pest-schema": {
@@ -61,10 +60,12 @@
                 "$ref": "#/definitions/baldrick-pest-schema/properties/title"
               },
               "description": {
-                "$ref": "#/definitions/baldrick-pest-schema/properties/description"
+                "$ref": "#/definitions/baldrick-pest-schema/properties/description",
+                "description": "The main purpose of this section of script"
               },
               "motivation": {
-                "$ref": "#/definitions/baldrick-pest-schema/properties/motivation"
+                "$ref": "#/definitions/baldrick-pest-schema/properties/motivation",
+                "description": "The main reason why this step is needed"
               },
               "todo": {
                 "type": "string",
@@ -84,10 +85,12 @@
                       "$ref": "#/definitions/baldrick-pest-schema/properties/title"
                     },
                     "description": {
-                      "$ref": "#/definitions/baldrick-pest-schema/properties/description"
+                      "$ref": "#/definitions/baldrick-pest-schema/properties/description",
+                      "description": "The main purpose of this section of script"
                     },
                     "motivation": {
-                      "$ref": "#/definitions/baldrick-pest-schema/properties/motivation"
+                      "$ref": "#/definitions/baldrick-pest-schema/properties/motivation",
+                      "description": "The main reason why this step is needed"
                     },
                     "links": {
                       "$ref": "#/definitions/baldrick-pest-schema/properties/links"
@@ -145,7 +148,7 @@
                           "type": "string",
                           "minLength": 1,
                           "maxLength": 60,
-                          "pattern": "[a-z][\\d_a-z.-]+",
+                          "pattern": "[a-z][\\d._a-z-]+",
                           "description": "A short name that can used as part of a file name including the extension"
                         }
                       },
@@ -183,5 +186,6 @@
       "additionalProperties": false,
       "description": "A list of tests that run shells commands"
     }
-  }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
 }

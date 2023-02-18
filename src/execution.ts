@@ -87,9 +87,7 @@ export const executeStep = async (
   const status = toStatus({ exitCode, failed, isCanceled, timedOut, killed });
   const response: ShellResponse = { exitCode, stdout, stderr, stdouterr: all };
   ctx.steps.push(response);
-  if (status === 'success') {
-    return succeed({ run, response });
-  } else {
-    return fail({ category: status, run, response });
-  }
+  return status === 'success'
+    ? succeed({ run, response })
+    : fail({ category: status, run, response });
 };
