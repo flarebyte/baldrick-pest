@@ -69,7 +69,7 @@ const addRun = (run: string) =>
   run.length < 20 ? colors.run(run) : colors.run(run.slice(0, 20) + '...');
 
 export const prettyReportStepCase = (reportingCase: ReportingCase) => {
-  if (reportingCase.err === undefined) {
+  if (reportingCase.err.code === 'PASS') {
     console.error(
       colors.pass('✓ PASS') +
         ' ' +

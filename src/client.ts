@@ -36,7 +36,7 @@ program
 
 export async function runClient() {
   try {
-    program.parseAsync();
+    await program.parseAsync();
     console.log(`✓ Done. Version ${version}`);
   } catch (error) {
     console.log('baldrick-pest will exit with error code 1');
