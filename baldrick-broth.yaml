@@ -1,9 +1,12 @@
 model:
   project:
-    title: Build automation tool and task runner
+    title: Cunning regression tests for CLI applications
     version: 0.6.0
     description: Take your developer workflow to the next level with a custom CLI
       with relevant documentation for running your task
+    keywords:
+      - CLI
+      - Regression tests
   readme:
     highlights:
       - Written in `Typescript`
@@ -14,14 +17,21 @@ model:
         ne) Run tests declaratively with a few cunning plans"
   github:
     account: flarebyte
-    name: baldrick-broth
+    name: baldrick-pest
+  author:
+    name: Olivier Huin
+    url: https://github.com/olih
   copyright:
     holder: Flarebyte.com
     startYear: 2022
   license: MIT
-  pest-filenames:
-    - simple
-  workflow-version: 0.3.0
+  implementation:
+    tags:
+      - cli
+      - commander
+      - zod
+      - railway
+  workflowVersion: "0.3.0"
 workflows:
   test:
     title: Test the library
