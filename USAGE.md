@@ -126,6 +126,48 @@ count:
 
 The test case has two steps. The first step reads the content of a file named LICENSE using the cat command. The expected exit code for this step is 0. The second step counts the number of lines in the input received from the first step using the wc -l command. The input for this step is specified using the stdin key and is set to the output of the first step. The expected output for this step is specified using the snapshot key and is set to the content of a file named `lines.txt`.
 
+## Github action
+
+This is a GitHub Actions workflow file written in YAML for reporting the results of the baldrick-pest tests. It specifies a continuous integration (CI) workflow that runs when code is pushed to the repository. The workflow has one job named build that runs on both macOS and Ubuntu operating systems using Node version `18.x`. The job checks out the repository, runs pest integration tests if the pest-spec directory exists, and generates a test report using the [dorny/test-reporter](https://github.com/dorny/test-reporter) action.
+
+```yaml
+name: CI
+on:
+  - push
+jobs:
+  build:
+    name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node:
+          - 18.x
+        os:
+          - macOS-latest
+          - ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Run pest integration tests
+        run: |
+          if [ -d "pest-spec" ]; then
+            npx npx baldrick-broth@latest test pest
+          else
+            echo "No pest files. Skipping"
+          fi
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Pest
+          path: report/*.pest.mocha.json
+          reporter: mocha-json
+```
+
+
+![Github action pest](github-action-pest.png)
+
+
 ## Visual Studio code
 
 [YAML Language Support by Red
