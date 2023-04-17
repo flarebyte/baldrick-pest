@@ -15,7 +15,6 @@ model:
       - |
         Reports the test results in mocha json.
         This makes it easy to integrate with other tools and services that use mocha json as a standard format for test results.
-
     links:
       - "[Usage ★★](USAGE.md)"
       - "[Overview for the json schema for baldrick pest yaml file](SCHEMA.md)"
@@ -27,7 +26,8 @@ model:
       - "[bash_unit](https://github.com/pgrange/bash_unit) bash unit testing enterprise edition framework"
       - "[shUnit2](https://github.com/kward/shunit2) unit test framework for Bourne based shell scripts"
     tags:
-      image-hero
+      - image-hero
+      - image-demo
   github:
     account: flarebyte
     name: baldrick-pest

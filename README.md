@@ -22,6 +22,7 @@ Highlights:
 This makes it easy to integrate with other tools and services that use mocha json as a standard format for test results.
 
 
+![Example of baldrick-pest usage](baldrick-pest-usage.gif "cli")
 
 ## Documentation and links
 
