@@ -26,6 +26,8 @@ model:
       - "[assert sh](https://github.com/lehmannro/assert.sh) test-driven development for bash"
       - "[bash_unit](https://github.com/pgrange/bash_unit) bash unit testing enterprise edition framework"
       - "[shUnit2](https://github.com/kward/shunit2) unit test framework for Bourne based shell scripts"
+    tags:
+      image-hero
   github:
     account: flarebyte
     name: baldrick-pest
