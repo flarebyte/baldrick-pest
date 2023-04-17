@@ -2,19 +2,30 @@ model:
   project:
     title: Cunning regression tests for CLI applications
     version: 0.6.0
-    description: Take your developer workflow to the next level with a custom CLI
-      with relevant documentation for running your task
+    description: Run some
     keywords:
       - CLI
       - Regression tests
   readme:
     highlights:
-      - Written in `Typescript`
+      - Test any kind of executable regardless of the programming language it has been created with.
+      - Tests are written in YAML with a json schema.
+      - Regression are checked by making snapshots.
+      - Writing tests is quick and easy with auto-completion in vs-code
+      - |
+        Reports the test results in mocha json.
+        This makes it easy to integrate with other tools and services that use mocha json as a standard format for test results.
+
     links:
-      - "[Usage](USAGE.md)"
+      - "[Usage ★★](USAGE.md)"
+      - "[Overview for the json schema for baldrick pest yaml file](SCHEMA.md)"
+      - "[Json schema for baldrick pest yaml file](spec/snapshots/build-model/get-schema--schema.json)"
     related:
       - "[baldrick-zest-engine](https://github.com/flarebyte/baldrick-zest-engi\
         ne) Run tests declaratively with a few cunning plans"
+      - "[assert sh](https://github.com/lehmannro/assert.sh) test-driven development for bash"
+      - "[bash_unit](https://github.com/pgrange/bash_unit) bash unit testing enterprise edition framework"
+      - "[shUnit2](https://github.com/kward/shunit2) unit test framework for Bourne based shell scripts"
   github:
     account: flarebyte
     name: baldrick-pest
@@ -150,7 +161,8 @@ workflows:
       cli:
         title: Run client directly
         description: Run the client with ts-node during development
-        motivation: Simulate a CLI app in development without the need to install it
+        motivation:
+          Simulate a CLI app in development without the need to install it
           globally
         main:
           commands:
@@ -277,7 +289,8 @@ workflows:
               run: npx baldrick-dev-ts@latest markdown check -s .github/
       fix:
         title: Fix Markdown files
-        description: Modify the markdown documents to ensure they follow some consistent
+        description:
+          Modify the markdown documents to ensure they follow some consistent
           guidelines
         motivation: Make the markdown documents consistent in style
         main:
@@ -291,7 +304,8 @@ workflows:
     tasks:
       ready:
         title: Ready for publishing
-        description: Run a sequence of commands to check that the library is ready to be
+        description:
+          Run a sequence of commands to check that the library is ready to be
           published
         motivation: Detect quality flaws before pushing the code
         parameters:
@@ -412,7 +426,8 @@ workflows:
               title: Title for the pull request
               description: A short title used for the pull request
               message: Short title describing the pull request
-            - run: gh pr create --title {{escapeSpace _.category}}:{{escapeSpace _.title}}
+            - run:
+                gh pr create --title {{escapeSpace _.category}}:{{escapeSpace _.title}}
                 --body-file temp/pull_request_relevant.md
               title: Create the pull request
       publish:
@@ -485,7 +500,8 @@ workflows:
             - title: Create all github repositories
               run: mkdir -p .github/workflows .github/ISSUE_TEMPLATE
             - title: Github - create bug report form
-              run: npx baldrick-whisker@latest object .github/ISSUE_TEMPLATE/bug_report.yaml
+              run:
+                npx baldrick-whisker@latest object .github/ISSUE_TEMPLATE/bug_report.yaml
                 github:flarebyte:baldrick-reserve:data/ts/bug-report.yaml
             - title: Github - create feature request form
               run: npx baldrick-whisker@latest object
@@ -508,11 +524,13 @@ workflows:
               links:
                 - title: Specify files to ignore in source control
                   url: https://git-scm.com/docs/gitignore
-              run: npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+              run:
+                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/ts/gitignore.hbs
                 .gitignore.sh
             - title: Create .editorconfig
-              run: npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+              run:
+                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/editorconfig.hbs
                 .editorconfig.sh
               links:
@@ -561,7 +579,8 @@ workflows:
                 github:flarebyte:baldrick-reserve:template/ts/maintenance.hbs
                 MAINTENANCE.md
             - title: Create LICENSE
-              run: npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+              run:
+                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/ts/license.hbs
                 LICENSE.md
             - title: Fix markdown
@@ -623,7 +642,8 @@ workflows:
       custom:
         title: Normalize using the custom script
         description: Normalize the project using a custom script for this project
-        motivation: Enable an imperative approach for some of normalisation to keep the
+        motivation:
+          Enable an imperative approach for some of normalisation to keep the
           model simple
         main:
           commands:
