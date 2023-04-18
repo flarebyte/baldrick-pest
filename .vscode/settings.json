@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/flarebyte/baldrick-reserve/main/reserve-schema/ts-broth.schema.json": "baldrick-broth.yaml",
+  }
+}

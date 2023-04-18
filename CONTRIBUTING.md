@@ -17,39 +17,64 @@ in all your interactions with the project.
 
 The following commands should get you started:
 
+Setup an alias:
+
+```
+alias broth='npx baldrick-broth'
+```
+
+or if you prefer to always use the latest version:
+
+```
+alias broth='npx baldrick-broth@latest'
+```
+
+Install the `npm` dependencies:
+
 ```bash
 yarn install
-yarn test
+```
+
+Run the `zest` unit tests:
+
+```bash
+broth test spec
+```
+
+Run the `pest` CLI integration tests:
+
+```bash
+broth test pest
 ```
 
 A list of [most used commands](MAINTENANCE.md) is available:
 
 ```bash
-yarn h
+broth
 ```
 
 Please keep an eye on test coverage, bundle size and documentation.
 When you are ready for a pull request:
 
 ```bash
-yarn ready
+broth release ready
 ```
 
-And please check that building is still working:
+You will probably want to update the documentation:
 
 ```bash
-yarn build
+broth doc ts
 ```
 
 You can also simulate [Github actions](https://docs.github.com/en/actions)
 locally with [act](https://github.com/nektos/act).
 You will need to setup `.actrc` with the node.js docker image `-P
-ubuntu-latest=node:14-buster`
+ubuntu-latest=node:16-buster`
 
 To run the pipeline:
 
 ```bash
-act
+broth github act
 ```
 
 ## Pull Request Process
@@ -57,14 +82,23 @@ act
 1.  Make sure that an issue describing the intended code change exists and
     that this issue has been accepted.
 
+When you are about to do a pull-request:
+
+```bash
+broth release ready -pr
+```
+
+Then you can create the pull-request:
+
+```bash
+broth release pr
+```
+
 ## Publishing the library
 
 This would be done by the main maintainers of the project. Locally for now as
 updates are pretty infrequent, and some of tests have to be done manually.
 
-Assuming you have zsh installed, you can just do:
-
 ```bash
-source .aliases.zsh
-bpub
+broth release publish
 ```
