@@ -2,7 +2,15 @@
 
 ## Overview
 
-A `baldrick-pest` YAML file describes test cases for a command line interface (CLI) program. The file has several keys: `title`, `description`, and `cases`. The `title` key provides the name of the test, while the `description` key gives a brief explanation of what the test is for. The `cases` key contains a list of test cases, each with its own set of keys. In the following example, there is one test case with the key `cat`. This test case has its own title and a list of steps to be performed. Each step has its own title, a run command to execute, and an expect key that specifies what the expected outcome of the step should be.
+A `baldrick-pest` YAML file describes test cases for a command line interface
+(CLI) program. The file has several keys: `title`, `description`, and
+`cases`. The `title` key provides the name of the test, while the
+`description` key gives a brief explanation of what the test is for. The
+`cases` key contains a list of test cases, each with its own set of keys. In
+the following example, there is one test case with the key `cat`. This test
+case has its own title and a list of steps to be performed. Each step has its
+own title, a run command to execute, and an expect key that specifies what
+the expected outcome of the step should be.
 
 ```mermaid
 erDiagram
@@ -41,7 +49,9 @@ cases:
 
 ## Cases
 
-A case represents a test case for a command line interface (CLI) program. A test case is a set of conditions under which a tester will determine whether the system under test satisfies requirements.
+A case represents a test case for a command line interface (CLI) program. A
+test case is a set of conditions under which a tester will determine whether
+the system under test satisfies requirements.
 
 | Name          | Type   | Description                                                             |
 | ------------- | ------ | ----------------------------------------------------------------------- |
@@ -56,7 +66,9 @@ A case represents a test case for a command line interface (CLI) program. A test
 | url (links)   | string | The URL of the linked resource                                          |
 
 This is a YAML script that defines a todo test case.
-TODO is a feature that allows you to create a test placeholder as a way to plan and keep track of what you want to test in the future. It’s a way to take note of tests that need to be written without actually writing them yet.
+TODO is a feature that allows you to create a test placeholder as a way to
+plan and keep track of what you want to test in the future. It’s a way to
+take note of tests that need to be written without actually writing them yet.
 
 ```yaml
 todo:
@@ -67,7 +79,9 @@ todo:
 
 ## Steps
 
-A step represents a single step in a test case for a command line interface (CLI) program. Each step has several keys that provide information about the step, such as its title, description, and motivation.
+A step represents a single step in a test case for a command line interface
+(CLI) program. Each step has several keys that provide information about the
+step, such as its title, description, and motivation.
 
 | Name                | Type    | Description                                                                          |
 | ------------------- | ------- | ------------------------------------------------------------------------------------ |
@@ -104,9 +118,14 @@ just-check-exit:
         exitCode: any
 ```
 
-The test case has two steps. The first step checks for the existence of a file named `this-file-does-not-exist.txt` using the ls command. The expected exit code for this step is any value between 1 and n. The second step simply displays the text “end of just-check-exit” using the `echo` command. The expected exit code for this step can be any value.
+The test case has two steps. The first step checks for the existence of a
+file named `this-file-does-not-exist.txt` using the ls command. The expected
+exit code for this step is any value between 1 and n. The second step simply
+displays the text “end of just-check-exit” using the `echo` command. The
+expected exit code for this step can be any value.
 
-Another YAML script that defines a test case for counting the number of lines in a file:
+Another YAML script that defines a test case for counting the number of lines
+in a file:
 
 ```yaml
 count:
@@ -124,11 +143,74 @@ count:
         snapshot: lines.txt
 ```
 
-The test case has two steps. The first step reads the content of a file named LICENSE using the cat command. The expected exit code for this step is 0. The second step counts the number of lines in the input received from the first step using the wc -l command. The input for this step is specified using the stdin key and is set to the output of the first step. The expected output for this step is specified using the snapshot key and is set to the content of a file named `lines.txt`.
+The test case has two steps. The first step reads the content of a file named
+LICENSE using the cat command. The expected exit code for this step is 0. The
+second step counts the number of lines in the input received from the first
+step using the wc -l command. The input for this step is specified using the
+stdin key and is set to the output of the first step. The expected output for
+this step is specified using the snapshot key and is set to the content of a
+file named `lines.txt`.
+
+## CLI
+
+You can use baldrick-pest CLI to run shell regression tests on my\_program and
+ensure that it is functioning as expected. Here's an example command:
+
+```bash
+npx baldrick-pest@latest test --spec-file pest-spec/my_program.pest.yaml
+```
+
+The test command runs regression tests and takes several options to specify
+the test file, directory location, and report preferences.
+
+```bash
+Usage: baldrick-pest test [options]
+
+Run regression test
+
+Options:
+  - f, --spec-file <filename>         Test file in baldrick-pest YAML
+format (default: "pest-spec/index.pest.yaml")
+  - dir, --spec-dir <directory>       Directory with the pest spec files
+(default: "pest-spec")
+  - rep, --report-dir <directory>     Directory for the reports (default:
+"report")
+  - snap, --snapshot-dir <directory>  Directory for the snapshots (default:
+"pest-spec/snapshots")
+  - mocha, --mocha-json-report        Enable mocha reports (default: true)
+  - h, --help                         display help for command
+```
+
+To run the test command with additional options, use the following usage
+guide:
+
+```bash
+Usage: baldrick-pest [options] [command]
+
+CLI to run shell regression tests
+
+Options:
+  - V, --version   output the version number
+  - h, --help      display help for command
+
+Commands:
+  test [options]  Run regression test
+  help [command]  display help for command
+```
+
+Use these commands and options to ensure that your program is working
+properly and to quickly identify any potential issues.
 
 ## Github action
 
-This is a GitHub Actions workflow file written in YAML for reporting the results of the baldrick-pest tests. It specifies a continuous integration (CI) workflow that runs when code is pushed to the repository. The workflow has one job named build that runs on both macOS and Ubuntu operating systems using Node version `18.x`. The job checks out the repository, runs pest integration tests if the pest-spec directory exists, and generates a test report using the [dorny/test-reporter](https://github.com/dorny/test-reporter) action.
+This is a GitHub Actions workflow file written in YAML for reporting the
+results of the baldrick-pest tests. It specifies a continuous integration
+(CI) workflow that runs when code is pushed to the repository. The workflow
+has one job named build that runs on both macOS and Ubuntu operating systems
+using Node version `18.x`. The job checks out the repository, runs pest
+integration tests if the pest-spec directory exists, and generates a test
+report using the
+[dorny/test-reporter](https://github.com/dorny/test-reporter) action.
 
 ```yaml
 name: CI
@@ -164,9 +246,7 @@ jobs:
           reporter: mocha-json
 ```
 
-
 ![Github action pest](github-action-pest.png)
-
 
 ## Visual Studio code
 
