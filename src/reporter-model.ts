@@ -1,22 +1,22 @@
 // See https://github.com/dorny/test-reporter/blob/main/src/parsers/mocha-json/mocha-json-types.ts
 
 export type ReportingError =
-  | {
-  	code: 'ERR_GENERAL';
-  	stack?: string;
-  	message: string;
-  }
-  | {
-  	code: 'ERR_ASSERTION';
-  	stack?: string;
-  	message: string;
-  	actual: string;
-  	expected: string;
-  	operator: 'strictEqual';
-  }
-  | {
-  	code: 'PASS';
-  };
+	| {
+		code: 'ERR_GENERAL';
+		stack?: string;
+		message: string;
+	}
+	| {
+		code: 'ERR_ASSERTION';
+		stack?: string;
+		message: string;
+		actual: string;
+		expected: string;
+		operator: 'strictEqual';
+	}
+	| {
+		code: 'PASS';
+	};
 
 export type ReportingCase = {
 	title: string;

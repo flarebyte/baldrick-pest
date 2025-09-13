@@ -82,10 +82,7 @@ const checkExpectationAndSnapshot = async (parameters: {
 		step.expect.snapshot,
 	);
 	const existingSnapshotResult = await readSnapshotFile(snapshotFileName);
-	const expected
-    = existingSnapshotResult.status === 'success'
-    	? existingSnapshotResult.value
-    	: undefined;
+	const expected = existingSnapshotResult.status === 'success' ? existingSnapshotResult.value : undefined;
 	const compareResult = await checkSnapshot(actual, snapshotFileName, expected);
 	return compareResult.status === 'success'
 		? succeed({message: 'Matches existing snapshot'})
@@ -107,10 +104,9 @@ const executeStepAndSnaphot = async (parameters: {
 	const {opts, ctx, step, useCase} = parameters;
 	const {title} = step;
 	const {specFile} = opts.runOpts;
-	const snapshotFile
-    = step.expect?.snapshot === undefined
-    	? undefined
-    	: getSnapshotFilename(opts.runOpts, useCase.name, step.expect.snapshot);
+	const snapshotFile = step.expect?.snapshot === undefined
+		? undefined
+		: getSnapshotFilename(opts.runOpts, useCase.name, step.expect.snapshot);
 
 	const reportingCaseDefault = {
 		title,
@@ -169,19 +165,16 @@ const executeStepAndSnaphot = async (parameters: {
 	}
 
 	const {message, actual, expected} = snapshotResponse.error;
-	const stepCommandMessage
-        = stepResult.error.message === undefined
-        	? stepResult.error.response.stdouterr
-        	: stepResult.error.message;
+	const stepCommandMessage =
+		stepResult.error.message ?? stepResult.error.response.stdouterr;
 	reportCaseStep(opts.reportTracker, {
 		...reportingCaseDefault,
 		duration,
 		err: {
 			code: 'ERR_ASSERTION',
-			message:
-            stepCommandMessage === undefined
-            	? message
-            	: `${message}\n${stepCommandMessage}`,
+				message: stepCommandMessage
+					? `${message}\n${stepCommandMessage}`
+					: message,
 			actual,
 			expected,
 			operator: 'strictEqual',

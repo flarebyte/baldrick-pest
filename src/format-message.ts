@@ -12,7 +12,7 @@ export const formatMessage = (issue: z.ZodIssue): ValidationError => {
 				path,
 				message: [
 					'The type for the field is invalid',
-					`I would expect ${issue.expected} instead of ${issue.received}`,
+					`I would expect ${String(issue.expected)} instead of ${String(issue.received)}`,
 				].join('; '),
 			};
 		}
@@ -22,7 +22,7 @@ export const formatMessage = (issue: z.ZodIssue): ValidationError => {
 				path,
 				message: [
 					'The string for the field is invalid',
-					`${issue.message} and ${issue.validation}`,
+					`${issue.message} and ${String(issue.validation)}`,
 				].join('; '),
 			};
 		}
@@ -32,7 +32,7 @@ export const formatMessage = (issue: z.ZodIssue): ValidationError => {
 				path,
 				message: [
 					'The enum for the field is invalid',
-					`I would expect any of ${issue.options} instead of ${issue.received}`,
+					`I would expect any of ${issue.options.join(', ')} instead of ${String(issue.received)}`,
 				].join('; '),
 			};
 		}
@@ -42,7 +42,7 @@ export const formatMessage = (issue: z.ZodIssue): ValidationError => {
 				path,
 				message: [
 					'The literal for the field is invalid',
-					`I would expect ${issue.expected}`,
+					`I would expect ${String(issue.expected)}`,
 				].join('; '),
 			};
 		}
@@ -52,7 +52,7 @@ export const formatMessage = (issue: z.ZodIssue): ValidationError => {
 				path,
 				message: [
 					'The union discriminator for the object is invalid',
-					`I would expect any of ${issue.options}`,
+					`I would expect any of ${issue.options.join(', ')}`,
 				].join('; '),
 			};
 		}
@@ -64,7 +64,8 @@ export const formatMessage = (issue: z.ZodIssue): ValidationError => {
 					'The union for the field is invalid',
 					`I would check ${issue.unionErrors
 						.flatMap(error => error.issues)
-						.map(i => i.message)}`,
+						.map(i => i.message)
+						.join(', ')}`,
 				].join('; '),
 			};
 		}

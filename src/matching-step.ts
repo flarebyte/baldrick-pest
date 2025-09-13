@@ -18,6 +18,9 @@ export const matchExitCode = (
 		case 'exit 1 .. n': {
 			return actual >= 1;
 		}
+		default: {
+			return false;
+		}
 	}
 };
 
@@ -44,17 +47,21 @@ export const getInputFromStdin = (
 		});
 	}
 
-	switch (receiving) {
+		switch (receiving) {
 		case 'stdout': {
-			return succeed(stepValue.stdout || '');
+			return succeed(stepValue.stdout ?? '');
 		}
 
 		case 'stderr': {
-			return succeed(stepValue.stderr || '');
+			return succeed(stepValue.stderr ?? '');
 		}
 
 		case 'stdout + stderr': {
-			return succeed(stepValue.stdouterr || '');
+			return succeed(stepValue.stdouterr ?? '');
+		}
+
+		default: {
+			return succeed('');
 		}
 	}
 };

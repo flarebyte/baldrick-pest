@@ -13,7 +13,7 @@ export const readSnapshotFile = async (
 	try {
 		const value = await readFile(filename, {encoding: 'utf8'});
 		return succeed(value);
-	} catch (error) {
+	} catch (error: unknown) {
 		if (error instanceof Error) {
 			return fail({
 				filename,
