@@ -242,11 +242,11 @@ export const runRegressionSuite = async (options: TestingRunOpts) => {
 			steps: [],
 		};
 		for (const [, useCase] of Object.entries(pestSuite.pestModel.cases)) {
-				if (!useCase) {
-					continue;
-				}
+			if (!useCase) {
+				continue;
+			}
 
-				// eslint-disable-next-line no-await-in-loop -- Run use cases in sequence for stable reporting
+			// eslint-disable-next-line no-await-in-loop -- Run use cases in sequence for stable reporting
 			await runUseCase({opts: pestSuite, ctx, useCase});
 		}
 

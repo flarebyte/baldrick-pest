@@ -15,11 +15,11 @@ export const readYaml = async (filename: string): Promise<LoadingStatus> => {
 		return fail({
 			message: `The yaml file cannot be found: ${filename}`,
 			filename,
-			});
-		}
+		});
+	}
 
-		try {
-			const parsed: unknown = YAML.parse(content);
+	try {
+		const parsed: unknown = YAML.parse(content);
 		if (parsed && typeof parsed === 'object') {
 			return {
 				status: 'success',
