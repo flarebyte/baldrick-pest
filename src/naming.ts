@@ -1,21 +1,21 @@
-import { relative, join, basename } from 'node:path';
-import { TestingRunOpts } from './run-opts-model.js';
+import {relative, join, basename} from 'node:path';
+import {type TestingRunOpts} from './run-opts-model.js';
 
 export const getSnapshotFilename = (
-  opts: TestingRunOpts,
-  useCaseName: string,
-  snapshotName: string
+	options: TestingRunOpts,
+	useCaseName: string,
+	snapshotName: string,
 ): string => {
-  const specFileBase = relative(opts.specDir, opts.specFile).replace(
-    '.pest.yaml',
-    ''
-  );
-  const snapshotFilename = `${specFileBase}--${useCaseName}--${snapshotName}`;
-  return join(opts.snapshotDir, snapshotFilename);
+	const specFileBase = relative(options.specDir, options.specFile).replace(
+		'.pest.yaml',
+		'',
+	);
+	const snapshotFilename = `${specFileBase}--${useCaseName}--${snapshotName}`;
+	return join(options.snapshotDir, snapshotFilename);
 };
 
-export const getMochaFilename = (opts: TestingRunOpts): string => {
-  const specFileBase = basename(opts.specFile).replace('.pest.yaml', '');
-  const reportFilename = `report-${specFileBase}.pest.mocha.json`;
-  return join(opts.reportDir, reportFilename);
+export const getMochaFilename = (options: TestingRunOpts): string => {
+	const specFileBase = basename(options.specFile).replace('.pest.yaml', '');
+	const reportFilename = `report-${specFileBase}.pest.mocha.json`;
+	return join(options.reportDir, reportFilename);
 };
