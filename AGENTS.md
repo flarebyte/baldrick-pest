@@ -28,7 +28,7 @@ Getting Started
 - Install deps: `yarn install`. Then list tasks with `npx baldrick-broth@latest test`.
 
 ## Coding Style & Naming Conventions
-- Language: TypeScript (strict mode). Node >= 22. ESM only.
+- Language: TypeScript (strict mode). Node >= 18. ESM only.
 - Files: kebab-case modules (e.g., `run-regression-suite.ts`), tests end with `.test.ts`.
 - Exports: prefer named exports; avoid default exports.
 - Formatting: Prettier 2-space indent, single quotes, semicolons, trailing commas (`.prettierrc.json`). `.editorconfig` enforced.
