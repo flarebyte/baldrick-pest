@@ -86,7 +86,7 @@ export const safeParseBuild = (content: unknown): PestModelValidation => {
 	const {
 		error: {issues},
 	} = result;
-	const errors = issues.map(formatMessage);
+	const errors = issues.map(issue => formatMessage(issue));
 	return fail(errors);
 };
 

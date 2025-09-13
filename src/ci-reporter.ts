@@ -7,14 +7,14 @@ export const ciReportStartSuite = (title: string, secondary: string) => {
 export const ciReportStepCase = (reportingCase: ReportingCase) => {
 	if (reportingCase.err.code === 'PASS') {
 		console.error(
-			`✓ PASS ${reportingCase.title} ${reportingCase.snapshotFile}`,
+			`✓ PASS ${reportingCase.title} ${reportingCase.snapshotFile ?? ''}`,
 		);
 		return;
 	}
 
 	if (reportingCase.err.code === 'ERR_GENERAL') {
 		console.error(
-			`✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile}`,
+			`✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile ?? ''}`,
 		);
 		console.info(reportingCase.err.message);
 		return;
@@ -22,7 +22,7 @@ export const ciReportStepCase = (reportingCase: ReportingCase) => {
 
 	if (reportingCase.err.code === 'ERR_ASSERTION') {
 		console.error(
-			`✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile}`,
+			`✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile ?? ''}`,
 		);
 		console.info(reportingCase.err.message);
 		if (reportingCase.err.stack !== undefined) {
@@ -32,9 +32,9 @@ export const ciReportStepCase = (reportingCase: ReportingCase) => {
 };
 
 export const ciReportTodo = (title: string) => {
-	console.info('. TODO' + ' ' + title);
+	console.info(`. TODO ${title}`);
 };
 
 export const ciReportSkipped = (title: string, reason: string) => {
-	console.info('. SKIP' + ' ' + title + ' ' + reason);
+	console.info(`. SKIP ${title} ${reason}`);
 };

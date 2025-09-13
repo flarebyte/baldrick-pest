@@ -49,7 +49,7 @@ export const stringy = {
 	capture: z.enum(['stdout', 'stderr', 'stdout + stderr']).default('stdout'),
 };
 export const safeParseField = (
-	name: 'title' | 'filename' | string,
+	name: string,
 	content: unknown,
 ) => {
 	if (name === 'title') {

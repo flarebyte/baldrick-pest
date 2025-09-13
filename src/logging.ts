@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import winston from 'winston';
 
 const {printf} = winston.format;
-const consoleLikeFormat = printf(({message}) => message);
+const consoleLikeFormat = printf(info => String(info.message ?? ''));
 
 export const currentTaskLogger = winston.createLogger({
 	level: 'info',
@@ -41,7 +41,7 @@ export const replayLogToConsole = async () => {
 			encoding: 'utf8',
 		});
 		console.log(['', '', currentLog].join('\n'));
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error('Could not replay the log', error);
 	}
 };

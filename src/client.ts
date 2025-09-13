@@ -38,9 +38,9 @@ export async function runClient() {
 	try {
 		await program.parseAsync();
 		console.log(`✓ Done. Version ${version}`);
-	} catch (error) {
+	} catch (error: unknown) {
 		console.log('baldrick-pest will exit with error code 1');
 		console.error(error);
-		process.exit(1); // eslint-disable-line  unicorn/no-process-exit
+		void import('node:process').then(({default: process}) => process.exit(1)); // eslint-disable-line unicorn/no-process-exit
 	}
 }

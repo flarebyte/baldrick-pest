@@ -14,3 +14,4 @@ export type PestFileSuiteOpts = {
 	pestModel: PestModel;
 	runOpts: TestingRunOpts;
 };
+/* eslint unicorn/prevent-abbreviations: ["error", {"allowList": {"Opts": true, "opts": true}}] */

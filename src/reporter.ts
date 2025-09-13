@@ -4,7 +4,7 @@ import {
 	ciReportStartSuite,
 	ciReportTodo,
 } from './ci-reporter.js';
-import {isCI} from './is-ci.js';
+import {isCi} from './is-ci.js';
 import {
 	prettyReportStepCase,
 	prettyReportSkipped,
@@ -14,9 +14,11 @@ import {
 import {type ReportingCase, type ReportTracker} from './reporter-model.js';
 
 export const reportStartSuite = (title: string, secondary: string) => {
-	isCI
-		? ciReportStartSuite(title, secondary)
-		: prettyReportStartSuite(title, secondary);
+	if (isCi) {
+		ciReportStartSuite(title, secondary);
+	} else {
+		prettyReportStartSuite(title, secondary);
+	}
 };
 
 export const reportStopSuite = () => {
@@ -29,15 +31,25 @@ export const reportCaseStep = (
 ) => {
 	const duration = Date.now() - reportTracker.stats.duration;
 	reportTracker.tests.push({...reportingCase, duration});
-	isCI
-		? ciReportStepCase(reportingCase)
-		: prettyReportStepCase(reportingCase);
+	if (isCi) {
+		ciReportStepCase(reportingCase);
+	} else {
+		prettyReportStepCase(reportingCase);
+	}
 };
 
 export const reportTodo = (title: string) => {
-	isCI ? ciReportTodo(title) : prettyReportTodo(title);
+	if (isCi) {
+		ciReportTodo(title);
+	} else {
+		prettyReportTodo(title);
+	}
 };
 
 export const reportSkipped = (title: string, reason: string) => {
-	isCI ? ciReportSkipped(title, reason) : prettyReportSkipped(title, reason);
+	if (isCi) {
+		ciReportSkipped(title, reason);
+	} else {
+		prettyReportSkipped(title, reason);
+	}
 };

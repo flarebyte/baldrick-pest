@@ -165,16 +165,13 @@ const executeStepAndSnaphot = async (parameters: {
 	}
 
 	const {message, actual, expected} = snapshotResponse.error;
-	const stepCommandMessage =
-		stepResult.error.message ?? stepResult.error.response.stdouterr;
+	const stepCommandMessage = stepResult.error.message ?? stepResult.error.response.stdouterr;
 	reportCaseStep(opts.reportTracker, {
 		...reportingCaseDefault,
 		duration,
 		err: {
 			code: 'ERR_ASSERTION',
-				message: stepCommandMessage
-					? `${message}\n${stepCommandMessage}`
-					: message,
+			message: stepCommandMessage ? `${message}\n${stepCommandMessage}` : message,
 			actual,
 			expected,
 			operator: 'strictEqual',
@@ -202,6 +199,7 @@ const runUseCase = async (parameters: {
 				continue;
 			}
 
+			// eslint-disable-next-line no-await-in-loop -- Steps must run sequentially to preserve context and snapshots
 			const stepResult = await executeStepAndSnaphot({
 				opts,
 				ctx,
@@ -243,12 +241,12 @@ export const runRegressionSuite = async (options: TestingRunOpts) => {
 		const ctx = {
 			steps: [],
 		};
-		for (const key in pestSuite.pestModel.cases) {
-			const useCase = pestSuite.pestModel.cases[key];
-			if (useCase === undefined) {
-				continue;
-			}
+		for (const [, useCase] of Object.entries(pestSuite.pestModel.cases)) {
+				if (!useCase) {
+					continue;
+				}
 
+				// eslint-disable-next-line no-await-in-loop -- Run use cases in sequence for stable reporting
 			await runUseCase({opts: pestSuite, ctx, useCase});
 		}
 

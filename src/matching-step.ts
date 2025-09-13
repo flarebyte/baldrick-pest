@@ -18,6 +18,7 @@ export const matchExitCode = (
 		case 'exit 1 .. n': {
 			return actual >= 1;
 		}
+
 		default: {
 			return false;
 		}
@@ -47,7 +48,7 @@ export const getInputFromStdin = (
 		});
 	}
 
-		switch (receiving) {
+	switch (receiving) {
 		case 'stdout': {
 			return succeed(stepValue.stdout ?? '');
 		}
@@ -81,6 +82,10 @@ export const getActualFromStdout = (
 
 		case 'stdout + stderr': {
 			return response.stdouterr;
+		}
+
+		default: {
+			return undefined;
 		}
 	}
 };
