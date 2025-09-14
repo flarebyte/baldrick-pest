@@ -110,6 +110,17 @@ Getting Started
     -   `yaml` — `test/yaml-smoke.test.ts`, `test/yaml-edge-smoke.test.ts`
     -   `zod` — `test/zod-smoke.test.ts`
 
+## Local Full Check
+
+-   Install deps: `yarn install`.
+-   Markdown lint: `npx baldrick-broth@latest md check`.
+-   Code lint: `npx baldrick-broth@latest lint check`.
+-   Direct XO details (optional): `npx xo 'src/**/*.ts'` and `npx xo src/execution.ts`.
+-   Unit tests: `yarn test`.
+-   Build CLI: `yarn build`.
+-   Version: `node dist/src/cli.mjs -V`.
+-   Sample spec: `node dist/src/cli.mjs test --spec-file pest-spec/simple.pest.yaml`.
+
 ## Release & PR Workflow
 
 -   Pre-flight checks: `npx baldrick-broth@latest release ready [-pr]`
