@@ -83,6 +83,23 @@ Getting Started
 -   Notes: `test pest1` is interactive (TTY required). The `jest` task is
     deprecated; prefer Node test runner.
 
+## Dependency Canary Tests
+
+-   Add concise smoke tests for production dependencies to detect breaking
+    changes on upgrades without testing our own code.
+
+-   Scope: import the dependency and exercise the small API surface we rely
+    on. Keep assertions minimal; aim for import + basic success/failure.
+
+-   Example: `test/zod-smoke.test.ts` imports `zod` and validates an object
+    with `safeParse`, asserting a success case (defaults applied) and a
+    failure case (issue paths captured).
+
+-   Naming: “dependency canary tests”, “compatibility smoke tests”, or
+    “third‑party integration smoke tests”.
+
+-   Run with `yarn test` (also via `npx baldrick-broth@latest test unit`).
+
 ## Release & PR Workflow
 
 -   Pre-flight checks: `npx baldrick-broth@latest release ready [-pr]`
