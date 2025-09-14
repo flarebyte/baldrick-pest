@@ -136,10 +136,13 @@ See also:
 
 -   [TypeDoc converts comments in Typescript into a JSON
     model](https://typedoc.org/)
+
 -   [baldrick-doc-ts produces markdown
     documentation](https://github.com/flarebyte/baldrick-doc-ts)
+
 -   [baldrick-doc-ts produces markdown
     documentation](https://github.com/flarebyte/baldrick-doc-ts)
+
 -   [Package development of Typescript library in ESM
     format](https://github.com/flarebyte/baldrick-dev-ts)
 

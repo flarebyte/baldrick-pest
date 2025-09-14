@@ -1,35 +1,67 @@
 # Schema for baldrick-pest
 
--   baldrick-pest-schema (object): A list of tests that run shells commands
--   ◆ title (string): A short title that summarizes this section of script
+-   baldrick-pest-schema (object): A list of tests that run shells
+    commands
+
+-   ◆ title (string): A short title that summarizes this section of
+    script
+
 -   ◆ description (string): The main purpose of this section of script
+
 -   ◆ motivation (string): The main reason why this step is needed
+
 -   ◆ links (array): A list of useful links
-    -   ○ title (string): A short title that summarizes this section of script
+    -   ○ title (string): A short title that summarizes this section of
+        script
+
     -   ○ url (string): A https link to a webpage
+
 -   ◆ cases (object): \_
     -   ◇ name (string): \_
-    -   ◇ title (string): A short title that summarizes this section of script
-    -   ◇ description (string): The main purpose of this section of script
+
+    -   ◇ title (string): A short title that summarizes this section of
+        script
+
+    -   ◇ description (string): The main purpose of this section of
+        script
+
     -   ◇ motivation (string): The main reason why this step is needed
+
     -   ◇ todo (string): A description of the todo specification
+
     -   ◇ links (array): A list of useful links
-        -   ○ title (string): A short title that summarizes this section of script
+        -   ○ title (string): A short title that summarizes this section
+            of script
+
         -   ○ url (string): A https link to a webpage
+
     -   ◇ steps (array): \_
-        -   ○ title (string): A short title that summarizes this section of script
-        -   ○ description (string): The main purpose of this section of script
-        -   ○ motivation (string): The main reason why this step is needed
+        -   ○ title (string): A short title that summarizes this section
+            of script
+
+        -   ○ description (string): The main purpose of this section of
+            script
+
+        -   ○ motivation (string): The main reason why this step is
+            needed
+
         -   ○ links (array): A list of useful links
-            -   ○ title (string): A short title that summarizes this section of script
+            -   ○ title (string): A short title that summarizes this
+                section of script
+
             -   ○ url (string): A https link to a webpage
+
         -   ○ stdin (object): Populate from stdout of step
             -   ◆ step (integer): \_
             -   ◆ exitCode (string): \_
             -   ◆ receiving (string): \_
+
         -   ○ run (string): A line of shell script
+
         -   ○ expect (object): Expectation
             -   ◆ exitCode (string): \_
+
             -   ◆ capture (string): \_
-            -   ◆ snapshot (string): A short name that can used as part of a file name
-                including the extension
+
+            -   ◆ snapshot (string): A short name that can used as part
+                of a file name including the extension
