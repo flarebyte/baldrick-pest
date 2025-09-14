@@ -40,14 +40,14 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "tsc --outDir dist",
+    "build": "tsc -p tsconfig.build.json --outDir dist",
     "test": "node --test --loader ts-node/esm test/*.test.ts",
     "cli": "node --loader ts-node/esm src/cli.mts",
     "spec": "node --loader ts-node/esm .baldrick-zest.ts"
   },
   "dependencies": {
     "chalk": "^5.6.2",
-    "commander": "^10.0.1",
+    "commander": "^14.0.1",
     "execa": "^7.1.1",
     "jest-diff": "^29.5.0",
     "winston": "^3.8.2",
@@ -55,6 +55,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/node": "^24.3.3",
     "baldrick-dev-ts": "^0.17.0",
     "baldrick-tsconfig-es2021": "^0.5.0",
     "baldrick-zest-engine": "^0.9.0",
@@ -63,4 +64,5 @@
     "typescript": "^5.0.4"
   },
   "peerDependencies": {}
+  
 }
