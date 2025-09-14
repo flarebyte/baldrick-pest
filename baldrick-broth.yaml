@@ -1,7 +1,7 @@
 model:
   project:
     title: Cunning regression tests for CLI applications
-    version: 0.9.0
+    version: 0.10.0
     description: Run some
     keywords:
       - CLI
@@ -340,7 +340,7 @@ workflows:
               run: yarn outdated
             - name: audit
               title: Audit some libraries
-              run: yarn audit
+              run: yarn audit --groups dependencies
             - name: has-pest-files
               title: Check if there are any pest files
               run: find . -type f -name *.pest.yaml

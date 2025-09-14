@@ -78,22 +78,47 @@ export const executeStep = async (
 		}
 	}
 
+	const result = await execaCommand(run, {reject: false, ...maybeStdin, all: true});
+	// Execa v9 types are stricter; normalise optional fields with safe defaults.
+	type R = Partial<{
+		exitCode: number;
+		failed: boolean;
+		isCanceled: boolean;
+		timedOut: boolean;
+		killed: boolean;
+		stdout: string;
+		stderr: string;
+		all: string;
+	}>;
 	const {
+		exitCode: rawExitCode,
+		failed: rawFailed,
+		isCanceled: rawIsCanceled,
+		timedOut: rawTimedOut,
+		killed: rawKilled,
 		stdout,
 		stderr,
 		all,
+	} = result as unknown as R;
+
+	const exitCode = rawExitCode ?? 0;
+	const failed = Boolean(rawFailed);
+	const isCanceled = Boolean(rawIsCanceled);
+	const timedOut = Boolean(rawTimedOut);
+	const killed = Boolean(rawKilled);
+
+	const status = toStatus({
 		exitCode,
 		failed,
 		isCanceled,
 		timedOut,
 		killed,
-	} = await execaCommand(run, {reject: false, ...maybeStdin, all: true});
-
-	const status = toStatus({
-		exitCode, failed, isCanceled, timedOut, killed,
 	});
 	const response: ShellResponse = {
-		exitCode, stdout, stderr, stdouterr: all,
+		exitCode,
+		stdout,
+		stderr,
+		stdouterr: all,
 	};
 	ctx.steps.push(response);
 	return status === 'success'
