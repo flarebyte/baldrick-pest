@@ -89,3 +89,22 @@ Getting Started
     `src/pest-model.ts`.
 -   CI detection via `src/is-ci.ts`; when simulating CI locally, set
     `CI=true` to test reporters.
+
+## Local CLI Testing (subtle but important)
+
+-   `broth test pest` runs the latest published `baldrick-pest` via `npx`, not your local sources. Use it only to validate the published package.
+-   To test local changes to the CLI:
+    -   Transpile first. Either `rm -rf dist && yarn build` or `npx baldrick-broth@latest transpile ts`.
+    -   Then run from the built output: `node dist/src/cli.mjs test --spec-file pest-spec/simple.pest.yaml`.
+    -   Quick version check: `node dist/src/cli.mjs -V` (or `--version`).
+
+-   During development without transpiling, you can also run: `yarn cli` (ts-node) and pass the same flags.
+
+## Version Bumps
+
+-   Bump version to the next minor in all places:
+    -   `package.json` → `version`.
+    -   `src/version.ts` → exported `version` string.
+    -   `baldrick-broth.yaml` → `model.project.version`.
+-   After bumping, rebuild (`rm -rf dist && yarn build`) and validate with the local CLI command above.
+-   Sanity check the version flag outputs the new version: `node dist/src/cli.mjs -V`.
