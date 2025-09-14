@@ -102,8 +102,7 @@ Getting Started
 
 -   Current canaries:
     -   `chalk` — `test/chalk-smoke.test.ts`
-    -   `commander` — `test/commander-smoke.test.ts`,
-        `test/commander-subcommands-smoke.test.ts`
+    -   `commander` — `test/commander-smoke.test.ts`, `test/commander-subcommands-smoke.test.ts`
     -   `execa` — `test/execa-smoke.test.ts`
     -   `jest-diff` — `test/jest-diff-smoke.test.ts`
     -   `winston` — `test/winston-smoke.test.ts`
