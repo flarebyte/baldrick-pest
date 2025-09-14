@@ -46,7 +46,7 @@ Getting Started
 
 ## Coding Style & Naming Conventions
 
--   Language: TypeScript (strict mode). Node >= 18. ESM only.
+-   Language: TypeScript (strict mode). Node >= 22. ESM only.
 -   Files: kebab-case modules (e.g., `run-regression-suite.ts`), tests end
     with `.test.ts`.
 -   Exports: prefer named exports; avoid default exports.
@@ -99,6 +99,13 @@ Getting Started
     -   Quick version check: `node dist/src/cli.mjs -V` (or `--version`).
 
 -   During development without transpiling, you can also run: `yarn cli` (ts-node) and pass the same flags.
+
+## Node Version (nvm)
+
+-   This project targets Node 22. Use nvm to select it:
+    -   `nvm install 22` (first time)
+    -   `nvm use` (reads `.nvmrc`)
+    -   Verify with `node -v` → v22.x
 
 ## Version Bumps
 

@@ -77,7 +77,7 @@ workflows:
         motivation: Test what is not easily covered with zest
         links:
           - title: JavaScript tests that report results in TAP format
-            url: https://nodejs.org/dist/latest-v18.x/docs/api/test.html
+            url: https://nodejs.org/dist/latest-v22.x/docs/api/test.html
         main:
           commands:
             - title: Run unit tests

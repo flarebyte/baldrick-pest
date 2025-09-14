@@ -38,7 +38,7 @@ See also:
 See also:
 
 -   [JavaScript tests that report results in TAP
-    format](https://nodejs.org/dist/latest-v18.x/docs/api/test.html)
+    format](https://nodejs.org/dist/latest-v22.x/docs/api/test.html)
 
 ***
 
