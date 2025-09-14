@@ -63,6 +63,10 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
-  "peerDependencies": {}
-  
+  "peerDependencies": {},
+  "xo": {
+    "ignores": [
+      "src/client.ts"
+    ]
+  }
 }
