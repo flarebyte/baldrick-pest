@@ -3,8 +3,8 @@ import YAML from 'yaml';
 import {type Result, fail} from './railway.js';
 
 export type LoadingStatus = Result<
-Record<string, unknown>,
-{message: string; filename: string}
+	Record<string, unknown>,
+	{message: string; filename: string}
 >;
 
 export const readYaml = async (filename: string): Promise<LoadingStatus> => {

@@ -12,7 +12,9 @@ import {
 	type StepModel,
 	type UseCaseModel,
 } from './pest-model.js';
-import {andThen, fail, type Result, succeed} from './railway.js';
+import {
+	andThen, fail, type Result, succeed,
+} from './railway.js';
 import {type ReportTracker} from './reporter-model.js';
 import {
 	reportCaseStep,
@@ -39,12 +41,12 @@ const createReportTracker = (): ReportTracker => ({
 	tests: [],
 });
 type RunRegressionFailure =
-  | {message: string; filename: string}
-  | ValidationError[];
+	| {message: string; filename: string}
+	| ValidationError[];
 
 type SnaphotResponse = Result<
-{message: string},
-{actual: string; expected: string; message: string}
+	{message: string},
+	{actual: string; expected: string; message: string}
 >;
 
 const checkExpectationAndSnapshot = async (parameters: {
@@ -219,9 +221,7 @@ const runUseCase = async (parameters: {
 
 export const runRegressionSuite = async (options: TestingRunOpts) => {
 	const readingResult = await readYaml(options.specFile);
-	const modelResult = andThen<Record<string, unknown>, PestModel, RunRegressionFailure>(
-		safeParseBuild,
-	)(readingResult);
+	const modelResult = andThen<Record<string, unknown>, PestModel, RunRegressionFailure>(safeParseBuild)(readingResult);
 
 	if (modelResult.status === 'failure') {
 		console.log(

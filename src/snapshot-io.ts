@@ -3,13 +3,11 @@ import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {type Result, fail, succeed} from './railway.js';
 
 type SnapshotStoreResult = Result<
-string,
-{filename: string; message: string}
+	string,
+	{filename: string; message: string}
 >;
 
-export const readSnapshotFile = async (
-	filename: string,
-): Promise<SnapshotStoreResult> => {
+export const readSnapshotFile = async (filename: string): Promise<SnapshotStoreResult> => {
 	try {
 		const value = await readFile(filename, {encoding: 'utf8'});
 		return succeed(value);
