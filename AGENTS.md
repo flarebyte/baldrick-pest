@@ -120,6 +120,11 @@ Getting Started
 -   Version: `node dist/src/cli.mjs -V`.
 -   Sample spec: `node dist/src/cli.mjs test --spec-file pest-spec/simple.pest.yaml`.
 
+## Known Issues / TODOs
+
+-   Schema snapshot mismatch on `upgrade-deps` for `spec/pest-model/get-schema.zest.yaml`
+    (after Zod v4 upgrade). See `TODO.md` for context and next steps.
+
 ## Release & PR Workflow
 
 -   Pre-flight checks: `npx baldrick-broth@latest release ready [-pr]`
