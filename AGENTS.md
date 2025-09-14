@@ -100,6 +100,16 @@ Getting Started
 
 -   Run with `yarn test` (also via `npx baldrick-broth@latest test unit`).
 
+-   Current canaries:
+    -   `chalk` — `test/chalk-smoke.test.ts`
+    -   `commander` — `test/commander-smoke.test.ts`,
+        `test/commander-subcommands-smoke.test.ts`
+    -   `execa` — `test/execa-smoke.test.ts`
+    -   `jest-diff` — `test/jest-diff-smoke.test.ts`
+    -   `winston` — `test/winston-smoke.test.ts`
+    -   `yaml` — `test/yaml-smoke.test.ts`, `test/yaml-edge-smoke.test.ts`
+    -   `zod` — `test/zod-smoke.test.ts`
+
 ## Release & PR Workflow
 
 -   Pre-flight checks: `npx baldrick-broth@latest release ready [-pr]`
