@@ -24,32 +24,47 @@ program
     .option('--mocha-json-report', 'Enable mocha reports', true)
     .action(runRegressionSuite);
 
-function normalizeLegacyFlags(argv: readonly string[]): string[] {
-    // Back-compat: map old multi-letter short flags to long flags so existing scripts continue to work.
-    const mapEqualForm = (arg: string, from: string, to: string) =>
-        arg.startsWith(from + '=') ? to + arg.slice(from.length) : arg;
-
-    const result: string[] = [];
+function guardLegacyFlags(argv: readonly string[]): void {
+    const legacy = [
+        {short: '-dir', long: '--spec-dir <directory>'},
+        {short: '-rep', long: '--report-dir <directory>'},
+        {short: '-snap', long: '--snapshot-dir <directory>'},
+        {short: '-mocha', long: '--mocha-json-report'},
+    ];
+    const offenders: string[] = [];
     for (const a of argv) {
-        if (a === '-dir') result.push('--spec-dir');
-        else if (a === '-rep') result.push('--report-dir');
-        else if (a === '-snap') result.push('--snapshot-dir');
-        else if (a === '-mocha') result.push('--mocha-json-report');
-        else result.push(a);
+        for (const {short} of legacy) {
+            if (a === short || a.startsWith(short + '=')) {
+                offenders.push(a);
+            }
+        }
     }
-    // Also handle forms like -dir=foo
-    return result.map(a =>
-        mapEqualForm(
-            mapEqualForm(mapEqualForm(mapEqualForm(a, '-dir', '--spec-dir'), '-rep', '--report-dir'), '-snap', '--snapshot-dir'),
-            '-mocha',
-            '--mocha-json-report',
-        ),
-    );
+    if (offenders.length > 0) {
+        const hints = legacy
+            .map(({short, long}) => `  - ${short} → use ${long}`)
+            .join('\n');
+        const message = [
+            'Error: Unsupported short flags detected:',
+            `  ${offenders.join(', ')}`,
+            '',
+            'Commander only supports single-letter short flags. Use the long options instead:',
+            hints,
+            '',
+            'Examples:',
+            '  baldrick-pest test --spec-dir pest-spec --report-dir report',
+            '  baldrick-pest test --snapshot-dir pest-spec/snapshots --mocha-json-report',
+        ].join('\n');
+        // eslint-disable-next-line no-console
+        console.error(message);
+        // eslint-disable-next-line unicorn/no-process-exit
+        process.exit(1);
+    }
 }
 
 export async function runClient() {
     try {
-        const argv = normalizeLegacyFlags(process.argv);
+        const argv = process.argv;
+        guardLegacyFlags(argv);
         await program.parseAsync(argv);
         console.log(`✓ Done. Version ${version}`);
     } catch (error: unknown) {
