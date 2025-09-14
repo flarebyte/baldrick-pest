@@ -18,10 +18,6 @@ export const matchExitCode = (
 		case 'exit 1 .. n': {
 			return actual >= 1;
 		}
-
-		default: {
-			return false;
-		}
 	}
 };
 
@@ -60,10 +56,6 @@ export const getInputFromStdin = (
 		case 'stdout + stderr': {
 			return succeed(stepValue.stdouterr ?? '');
 		}
-
-		default: {
-			return succeed('');
-		}
 	}
 };
 
@@ -82,10 +74,6 @@ export const getActualFromStdout = (
 
 		case 'stdout + stderr': {
 			return response.stdouterr;
-		}
-
-		default: {
-			return undefined;
 		}
 	}
 };

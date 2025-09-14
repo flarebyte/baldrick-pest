@@ -58,9 +58,7 @@ export const prettyReportTodo = (title: string) => {
 };
 
 export const prettyReportSkipped = (title: string, reason: string) => {
-	console.info(
-		colors.skip('. SKIP') + ' ' + colors.title(title) + ' ' + colors.log(reason),
-	);
+	console.info(colors.skip('. SKIP') + ' ' + colors.title(title) + ' ' + colors.log(reason));
 };
 
 const addSnapshot = (snapshotFile?: string) =>
@@ -71,25 +69,21 @@ const addRun = (run: string) =>
 
 export const prettyReportStepCase = (reportingCase: ReportingCase) => {
 	if (reportingCase.err.code === 'PASS') {
-		console.error(
-			colors.pass('✓ PASS')
-        + ' '
-        + colors.title(reportingCase.title)
-        + ' '
-        + addRun(reportingCase.run)
-        + addSnapshot(reportingCase.snapshotFile),
-		);
+		console.error(colors.pass('✓ PASS')
+			+ ' '
+			+ colors.title(reportingCase.title)
+			+ ' '
+			+ addRun(reportingCase.run)
+			+ addSnapshot(reportingCase.snapshotFile));
 		return;
 	}
 
 	if (reportingCase.err.code === 'ERR_GENERAL') {
-		console.error(
-			colors.error('✗ FAIL')
-        + ' '
-        + colors.title(reportingCase.title)
-        + addRun(reportingCase.run)
-        + addSnapshot(reportingCase.snapshotFile),
-		);
+		console.error(colors.error('✗ FAIL')
+			+ ' '
+			+ colors.title(reportingCase.title)
+			+ addRun(reportingCase.run)
+			+ addSnapshot(reportingCase.snapshotFile));
 		console.info(reportingCase.err.message);
 		if (reportingCase.err.stack !== undefined) {
 			console.info(colors.errorStack(reportingCase.err.stack));
@@ -100,13 +94,11 @@ export const prettyReportStepCase = (reportingCase: ReportingCase) => {
 	}
 
 	if (reportingCase.err.code === 'ERR_ASSERTION') {
-		console.error(
-			colors.error('✗ FAIL')
-        + ' '
-        + colors.title(reportingCase.title)
-        + addRun(reportingCase.run)
-        + addSnapshot(reportingCase.snapshotFile),
-		);
+		console.error(colors.error('✗ FAIL')
+			+ ' '
+			+ colors.title(reportingCase.title)
+			+ addRun(reportingCase.run)
+			+ addSnapshot(reportingCase.snapshotFile));
 		console.info(reportingCase.err.message);
 		console.info(colors.log('See ') + colors.errorSource(reportingCase.file));
 	}

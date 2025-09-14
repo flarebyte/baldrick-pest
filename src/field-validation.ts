@@ -14,9 +14,7 @@ export const stringy = {
 		.min(1)
 		.max(60)
 		.regex(/[a-z][\d._a-z-]+/)
-		.describe(
-			'A short name that can used as part of a file name including the extension',
-		),
+		.describe('A short name that can used as part of a file name including the extension'),
 	title: z
 		.string()
 		.trim()

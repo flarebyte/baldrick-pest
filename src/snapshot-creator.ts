@@ -3,12 +3,12 @@ import {writeSnapshotFile} from './snapshot-io.js';
 import {type Result, fail, succeed} from './railway.js';
 
 type SnapshotResult = Result<
-string,
-{
-	actual: string;
-	expected: string;
-	message: string;
-}
+	string,
+	{
+		actual: string;
+		expected: string;
+		message: string;
+	}
 >;
 
 export const checkSnapshot = async (
@@ -30,9 +30,7 @@ export const checkSnapshot = async (
 		});
 	}
 
-	const hasNoDifference = diffString.includes(
-		'Compared values have no visual difference',
-	);
+	const hasNoDifference = diffString.includes('Compared values have no visual difference');
 	return hasNoDifference
 		? succeed(actual)
 		: fail({

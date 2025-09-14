@@ -5,10 +5,10 @@ import {type StepModel} from './pest-model.js';
 import {type Result, succeed, fail} from './railway.js';
 
 type ExecuteCommandLineFailedCategory =
-  | 'failed'
-  | 'canceled'
-  | 'timeout'
-  | 'killed';
+	| 'failed'
+	| 'canceled'
+	| 'timeout'
+	| 'killed';
 
 type ExecuteCommandLineFailure = {
 	category: ExecuteCommandLineFailedCategory;
@@ -22,8 +22,8 @@ type ExecuteCommandLineSuccess = {
 	response: ShellResponse;
 };
 type ExecuteCommandLineResult = Result<
-ExecuteCommandLineSuccess,
-ExecuteCommandLineFailure
+	ExecuteCommandLineSuccess,
+	ExecuteCommandLineFailure
 >;
 
 const toStatus = (parameters: {
@@ -89,8 +89,12 @@ export const executeStep = async (
 		killed,
 	} = await execaCommand(run, {reject: false, ...maybeStdin, all: true});
 
-	const status = toStatus({exitCode, failed, isCanceled, timedOut, killed});
-	const response: ShellResponse = {exitCode, stdout, stderr, stdouterr: all};
+	const status = toStatus({
+		exitCode, failed, isCanceled, timedOut, killed,
+	});
+	const response: ShellResponse = {
+		exitCode, stdout, stderr, stdouterr: all,
+	};
 	ctx.steps.push(response);
 	return status === 'success'
 		? succeed({run, response})

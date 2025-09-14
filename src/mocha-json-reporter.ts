@@ -5,12 +5,8 @@ import {type FullReport} from './reporter-model.js';
 import {type PestFileSuiteOpts} from './run-opts-model.js';
 
 const expandReportTracker = (options: PestFileSuiteOpts): FullReport => {
-	const passes = options.reportTracker.tests.filter(
-		test => test.err.code === 'PASS',
-	);
-	const failures = options.reportTracker.tests.filter(
-		test => test.err.code !== 'PASS',
-	);
+	const passes = options.reportTracker.tests.filter(test => test.err.code === 'PASS');
+	const failures = options.reportTracker.tests.filter(test => test.err.code !== 'PASS');
 	const duration = options.reportTracker.tests.reduce(
 		(sum, t) => sum + t.duration,
 		0,

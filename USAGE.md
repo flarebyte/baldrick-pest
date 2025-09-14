@@ -207,7 +207,7 @@ This is a GitHub Actions workflow file written in YAML for reporting the
 results of the baldrick-pest tests. It specifies a continuous integration
 (CI) workflow that runs when code is pushed to the repository. The workflow
 has one job named build that runs on both macOS and Ubuntu operating systems
-using Node version `18.x`. The job checks out the repository, runs pest
+using Node version `22.x`. The job checks out the repository, runs pest
 integration tests if the pest-spec directory exists, and generates a test
 report using the
 [dorny/test-reporter](https://github.com/dorny/test-reporter) action.
@@ -223,7 +223,7 @@ jobs:
     strategy:
       matrix:
         node:
-          - 18.x
+          - 22.x
         os:
           - macOS-latest
           - ubuntu-latest
