@@ -1,3 +1,6 @@
-import { test } from 'node:test';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
 
-test('No test yet', () => {});
+void test('No test yet', () => {
+	assert.ok(true);
+});

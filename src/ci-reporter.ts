@@ -1,39 +1,40 @@
-import { ReportingCase } from './reporter-model.js';
+import {type ReportingCase} from './reporter-model.js';
 
 export const ciReportStartSuite = (title: string, secondary: string) => {
-  console.group(`${title}; ${secondary}`);
+	console.group(`${title}; ${secondary}`);
 };
-export const ciReportStepCase = (reportingCase: ReportingCase) => {
-  if (reportingCase.err.code === 'PASS') {
-    console.error(
-      `✓ PASS ${reportingCase.title} ${reportingCase.snapshotFile}`
-    );
-    return;
-  }
 
-  if (reportingCase.err.code === 'ERR_GENERAL') {
-    console.error(
-      `✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile}`
-    );
-    console.info(reportingCase.err.message);
-    return;
-  }
-  if (reportingCase.err.code === 'ERR_ASSERTION') {
-    console.error(
-      `✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile}`
-    );
-    console.info(reportingCase.err.message);
-    if (reportingCase.err.stack !== undefined) {
-      console.info(reportingCase.err.stack);
-    }
-    return;
-  }
+export const ciReportStepCase = (reportingCase: ReportingCase) => {
+	if (reportingCase.err.code === 'PASS') {
+		console.error(
+			`✓ PASS ${reportingCase.title} ${reportingCase.snapshotFile ?? ''}`,
+		);
+		return;
+	}
+
+	if (reportingCase.err.code === 'ERR_GENERAL') {
+		console.error(
+			`✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile ?? ''}`,
+		);
+		console.info(reportingCase.err.message);
+		return;
+	}
+
+	if (reportingCase.err.code === 'ERR_ASSERTION') {
+		console.error(
+			`✗ FAIL ${reportingCase.title} ${reportingCase.snapshotFile ?? ''}`,
+		);
+		console.info(reportingCase.err.message);
+		if (reportingCase.err.stack !== undefined) {
+			console.info(reportingCase.err.stack);
+		}
+	}
 };
 
 export const ciReportTodo = (title: string) => {
-  console.info('. TODO' + ' ' + title);
+	console.info(`. TODO ${title}`);
 };
 
 export const ciReportSkipped = (title: string, reason: string) => {
-  console.info('. SKIP' + ' ' + title + ' ' + reason);
+	console.info(`. SKIP ${title} ${reason}`);
 };
