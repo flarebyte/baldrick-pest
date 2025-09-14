@@ -78,23 +78,20 @@ export const executeStep = async (
 		}
 	}
 
-	const {
-		stdout,
-		stderr,
-		all,
-		exitCode,
-		failed,
-		isCanceled,
-		timedOut,
-		killed,
-	} = await execaCommand(run, {reject: false, ...maybeStdin, all: true});
+	const result = await execaCommand(run, {reject: false, ...maybeStdin, all: true});
+	// execa@9 types are stricter and some flags may be optional in the type definitions.
+	// Coerce booleans safely and default exitCode when undefined.
+	const exitCode = (result as any).exitCode ?? 0;
+	const failed = Boolean((result as any).failed);
+	const isCanceled = Boolean((result as any).isCanceled);
+	const timedOut = Boolean((result as any).timedOut);
+	const killed = Boolean((result as any).killed);
+	const stdout: string | undefined = (result as any).stdout;
+	const stderr: string | undefined = (result as any).stderr;
+	const all: string | undefined = (result as any).all;
 
-	const status = toStatus({
-		exitCode, failed, isCanceled, timedOut, killed,
-	});
-	const response: ShellResponse = {
-		exitCode, stdout, stderr, stdouterr: all,
-	};
+	const status = toStatus({exitCode, failed, isCanceled, timedOut, killed});
+	const response: ShellResponse = {exitCode, stdout, stderr, stdouterr: all};
 	ctx.steps.push(response);
 	return status === 'success'
 		? succeed({run, response})
