@@ -79,19 +79,47 @@ export const executeStep = async (
 	}
 
 	const result = await execaCommand(run, {reject: false, ...maybeStdin, all: true});
-	// execa@9 types are stricter and some flags may be optional in the type definitions.
-	// Coerce booleans safely and default exitCode when undefined.
-	const exitCode = (result as any).exitCode ?? 0;
-	const failed = Boolean((result as any).failed);
-	const isCanceled = Boolean((result as any).isCanceled);
-	const timedOut = Boolean((result as any).timedOut);
-	const killed = Boolean((result as any).killed);
-	const stdout: string | undefined = (result as any).stdout;
-	const stderr: string | undefined = (result as any).stderr;
-	const all: string | undefined = (result as any).all;
+	// Execa v9 types are stricter; normalise optional fields with safe defaults.
+	type R = Partial<{
+		exitCode: number;
+		failed: boolean;
+		isCanceled: boolean;
+		timedOut: boolean;
+		killed: boolean;
+		stdout: string;
+		stderr: string;
+		all: string;
+	}>;
+	const {
+		exitCode: rawExitCode,
+		failed: rawFailed,
+		isCanceled: rawIsCanceled,
+		timedOut: rawTimedOut,
+		killed: rawKilled,
+		stdout,
+		stderr,
+		all,
+	} = result as unknown as R;
 
-	const status = toStatus({exitCode, failed, isCanceled, timedOut, killed});
-	const response: ShellResponse = {exitCode, stdout, stderr, stdouterr: all};
+	const exitCode = rawExitCode ?? 0;
+	const failed = Boolean(rawFailed);
+	const isCanceled = Boolean(rawIsCanceled);
+	const timedOut = Boolean(rawTimedOut);
+	const killed = Boolean(rawKilled);
+
+	const status = toStatus({
+		exitCode,
+		failed,
+		isCanceled,
+		timedOut,
+		killed,
+	});
+	const response: ShellResponse = {
+		exitCode,
+		stdout,
+		stderr,
+		stdouterr: all,
+	};
 	ctx.steps.push(response);
 	return status === 'success'
 		? succeed({run, response})
