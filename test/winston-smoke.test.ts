@@ -1,0 +1,29 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import winston from 'winston';
+import { Writable } from 'node:stream';
+
+test('winston: create logger and log to custom stream', async () => {
+  const chunks: string[] = [];
+  const sink = new Writable({
+    write(chunk, _enc, cb) {
+      chunks.push(chunk.toString());
+      cb();
+    },
+  });
+
+  const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    transports: [new winston.transports.Stream({ stream: sink })],
+  });
+
+  assert.equal(typeof logger.info, 'function');
+  logger.info('hello', { foo: 'bar' });
+  await new Promise((r) => setImmediate(r));
+
+  const output = chunks.join('');
+  assert.equal(typeof output, 'string');
+  assert.ok(output.includes('"message":"hello"'));
+});
+
