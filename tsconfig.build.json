@@ -4,13 +4,6 @@
   "compilerOptions": {
     "rootDir": "."
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist",
-    "test",
-    "spec",
-    "pest-spec"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "test", "spec", "pest-spec"]
 }

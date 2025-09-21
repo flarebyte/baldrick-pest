@@ -1,105 +1,104 @@
-import {Chalk} from 'chalk';
-import {type ReportingCase} from './reporter-model.js';
+import { Chalk } from 'chalk';
+import type { ReportingCase } from './reporter-model.js';
 
 const chalk = new Chalk();
 
 // Inspired by AVA colors management
 const colors = {
-	get log() {
-		return chalk.gray;
-	},
-	get run() {
-		return chalk.blue.dim;
-	},
-	get section() {
-		return chalk.bold;
-	},
-	get title() {
-		return chalk.bold;
-	},
-	get error() {
-		return chalk.red;
-	},
-	get skip() {
-		return chalk.yellow;
-	},
-	get todo() {
-		return chalk.blue;
-	},
-	get pass() {
-		return chalk.green;
-	},
-	get duration() {
-		return chalk.gray.dim;
-	},
-	get errorSource() {
-		return chalk.gray;
-	},
-	get errorStack() {
-		return chalk.gray;
-	},
-	get errorStackInternal() {
-		return chalk.gray.dim;
-	},
-	get stack() {
-		return chalk.red;
-	},
-	get information() {
-		return chalk.magenta;
-	},
+  get log() {
+    return chalk.gray;
+  },
+  get run() {
+    return chalk.blue.dim;
+  },
+  get section() {
+    return chalk.bold;
+  },
+  get title() {
+    return chalk.bold;
+  },
+  get error() {
+    return chalk.red;
+  },
+  get skip() {
+    return chalk.yellow;
+  },
+  get todo() {
+    return chalk.blue;
+  },
+  get pass() {
+    return chalk.green;
+  },
+  get duration() {
+    return chalk.gray.dim;
+  },
+  get errorSource() {
+    return chalk.gray;
+  },
+  get errorStack() {
+    return chalk.gray;
+  },
+  get errorStackInternal() {
+    return chalk.gray.dim;
+  },
+  get stack() {
+    return chalk.red;
+  },
+  get information() {
+    return chalk.magenta;
+  },
 };
 
 export const prettyReportStartSuite = (title: string, secondary: string) => {
-	console.group(colors.section(`⦿ ${title}`) + ' ' + colors.log(secondary));
+  console.group(`${colors.section(`⦿ ${title}`)} ${colors.log(secondary)}`);
 };
 
 export const prettyReportTodo = (title: string) => {
-	console.info(colors.todo('. TODO') + ' ' + colors.title(title));
+  console.info(`${colors.todo('. TODO')} ${colors.title(title)}`);
 };
 
 export const prettyReportSkipped = (title: string, reason: string) => {
-	console.info(colors.skip('. SKIP') + ' ' + colors.title(title) + ' ' + colors.log(reason));
+  console.info(
+    `${colors.skip('. SKIP')} ${colors.title(title)} ${colors.log(reason)}`,
+  );
 };
 
 const addSnapshot = (snapshotFile?: string) =>
-	snapshotFile === undefined ? '' : '   ' + colors.log('📷 ' + snapshotFile);
+  snapshotFile === undefined ? '' : `   ${colors.log(`📷 ${snapshotFile}`)}`;
 
 const addRun = (run: string) =>
-	run.length < 20 ? colors.run(run) : colors.run(run.slice(0, 20) + '...');
+  run.length < 20 ? colors.run(run) : colors.run(`${run.slice(0, 20)}...`);
 
 export const prettyReportStepCase = (reportingCase: ReportingCase) => {
-	if (reportingCase.err.code === 'PASS') {
-		console.error(colors.pass('✓ PASS')
-			+ ' '
-			+ colors.title(reportingCase.title)
-			+ ' '
-			+ addRun(reportingCase.run)
-			+ addSnapshot(reportingCase.snapshotFile));
-		return;
-	}
+  if (reportingCase.err.code === 'PASS') {
+    console.error(
+      `${colors.pass('✓ PASS')} ${colors.title(reportingCase.title)} ${addRun(reportingCase.run)}${addSnapshot(reportingCase.snapshotFile)}`,
+    );
+    return;
+  }
 
-	if (reportingCase.err.code === 'ERR_GENERAL') {
-		console.error(colors.error('✗ FAIL')
-			+ ' '
-			+ colors.title(reportingCase.title)
-			+ addRun(reportingCase.run)
-			+ addSnapshot(reportingCase.snapshotFile));
-		console.info(reportingCase.err.message);
-		if (reportingCase.err.stack !== undefined) {
-			console.info(colors.errorStack(reportingCase.err.stack));
-		}
+  if (reportingCase.err.code === 'ERR_GENERAL') {
+    console.error(
+      `${colors.error('✗ FAIL')} ${colors.title(reportingCase.title)} ${addRun(reportingCase.run)}${addSnapshot(reportingCase.snapshotFile)}`,
+    );
+    console.info(reportingCase.err.message);
+    if (reportingCase.err.stack !== undefined) {
+      console.info(colors.errorStack(reportingCase.err.stack));
+    }
 
-		console.info(colors.log('See ') + colors.errorSource(reportingCase.file));
-		return;
-	}
+    console.info(
+      `${colors.log('See ')}${colors.errorSource(reportingCase.file)}`,
+    );
+    return;
+  }
 
-	if (reportingCase.err.code === 'ERR_ASSERTION') {
-		console.error(colors.error('✗ FAIL')
-			+ ' '
-			+ colors.title(reportingCase.title)
-			+ addRun(reportingCase.run)
-			+ addSnapshot(reportingCase.snapshotFile));
-		console.info(reportingCase.err.message);
-		console.info(colors.log('See ') + colors.errorSource(reportingCase.file));
-	}
+  if (reportingCase.err.code === 'ERR_ASSERTION') {
+    console.error(
+      `${colors.error('✗ FAIL')} ${colors.title(reportingCase.title)} ${addRun(reportingCase.run)}${addSnapshot(reportingCase.snapshotFile)}`,
+    );
+    console.info(reportingCase.err.message);
+    console.info(
+      `${colors.log('See ')}${colors.errorSource(reportingCase.file)}`,
+    );
+  }
 };

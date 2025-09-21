@@ -1276,6 +1276,11 @@ baldrick-tsconfig-es2021@^0.5.0:
   resolved "https://registry.yarnpkg.com/baldrick-tsconfig-es2021/-/baldrick-tsconfig-es2021-0.5.0.tgz#8236474db44b7bb45ccaa04922cb43fb9feb87ee"
   integrity sha512-4zrMW55LZogYR0gMyhfQLpCZo3mBtdtnC7gNo1OP6m8+3Qm6X3li4qve19EejeYk45fq+HXBZM+WkB89yBUUtA==
 
+baldrick-tsconfig-es2024@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/baldrick-tsconfig-es2024/-/baldrick-tsconfig-es2024-0.5.0.tgz#ae01b285e668ea9c6fcfc23b8a4aa23ba8d54048"
+  integrity sha512-82OwXc0QNQx7nINO4bEOWDhTQWUi+uiwjEhCL7468I6/JB6qrs3mJjSYzph9Pwp4suT+4k6lFpfo2sPZAlwAKA==
+
 baldrick-zest-engine@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/baldrick-zest-engine/-/baldrick-zest-engine-0.9.0.tgz#afffc2ca78309096d6f57b9ea334c9bae7dd943e"
