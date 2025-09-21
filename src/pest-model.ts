@@ -28,6 +28,7 @@ const expect = z
     exitCode: stringy.exitCode.default('exit 0'),
     capture: stringy.capture,
     snapshot: stringy.basename.optional(),
+    ignoreTrailingBlankLines: z.boolean().optional(),
   })
   .describe('Expectation');
 

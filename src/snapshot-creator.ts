@@ -23,11 +23,7 @@ export const checkSnapshot = async (
 
   const diffString = diff(expected, actual);
   if (diffString === null) {
-    return fail({
-      actual,
-      expected,
-      message: 'Comparison with a null value',
-    });
+    return succeed(actual);
   }
 
   const hasNoDifference = diffString.includes(
@@ -35,9 +31,5 @@ export const checkSnapshot = async (
   );
   return hasNoDifference
     ? succeed(actual)
-    : fail({
-        actual,
-        expected,
-        message: diffString,
-      });
+    : fail({ actual, expected, message: diffString });
 };

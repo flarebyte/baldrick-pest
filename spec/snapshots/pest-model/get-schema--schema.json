@@ -131,6 +131,9 @@
                         "capture": {
                           "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/steps/items/properties/stdin/properties/receiving"
                         },
+                        "ignoreTrailingBlankLines": {
+                          "type": "boolean"
+                        },
                         "snapshot": {
                           "type": "string",
                           "minLength": 1,

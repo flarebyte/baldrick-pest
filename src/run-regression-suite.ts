@@ -70,11 +70,22 @@ const checkExpectationAndSnapshot = async (parameters: {
     return succeed({ message: 'Nothing is expected' });
   }
 
-  const actual = getActualFromStdout(response, step.expect);
+  let actual = getActualFromStdout(response, step.expect);
 
   if (actual === undefined) {
     return fail({ message: 'No actual defined', actual: '', expected: '' });
   }
+
+  const normalizeEof = (text: string): string => {
+    // Remove trailing blank lines (lines that are empty or whitespace only) and ensure a single final newline
+    const lines = text.replace(/\r\n/g, '\n').split('\n');
+    let end = lines.length - 1;
+    while (end >= 0 && /^\s*$/.test(lines[end] ?? '')) {
+      end -= 1;
+    }
+    const trimmed = lines.slice(0, end + 1).join('\n');
+    return `${trimmed}\n`;
+  };
 
   const snapshotFileName = getSnapshotFilename(
     opts,
@@ -82,10 +93,17 @@ const checkExpectationAndSnapshot = async (parameters: {
     step.expect.snapshot,
   );
   const existingSnapshotResult = await readSnapshotFile(snapshotFileName);
-  const expected =
+  let expected =
     existingSnapshotResult.status === 'success'
       ? existingSnapshotResult.value
       : undefined;
+
+  if (step.expect.ignoreTrailingBlankLines === true) {
+    actual = normalizeEof(actual);
+    if (expected !== undefined) {
+      expected = normalizeEof(expected);
+    }
+  }
   const compareResult = await checkSnapshot(actual, snapshotFileName, expected);
   return compareResult.status === 'success'
     ? succeed({ message: 'Matches existing snapshot' })
