@@ -2,11 +2,12 @@ model:
   project:
     title: Cunning regression tests for CLI applications
     version: 0.11.0
-    description: Run some
+    description: Snapshot-driven acceptance tests for CLI apps defined in YAML.
     keywords:
       - CLI
       - Regression tests
   readme:
+    summary: Snapshot-driven acceptance tests for any CLI.
     highlights:
       - Test any kind of executable regardless of the programming language it
         has been created with.
@@ -20,8 +21,7 @@ model:
     links:
       - "[Usage ★★](USAGE.md)"
       - "[Overview for the json schema for baldrick pest yaml file](SCHEMA.md)"
-      - "[Json schema for baldrick pest yaml
-        file](spec/snapshots/build-model/get-schema--schema.json)"
+      - "[Json schema for baldrick pest yaml file](spec/snapshots/pest-model/get-schema--schema.json)"
     related:
       - "[baldrick-zest-engine](https://github.com/flarebyte/baldrick-zest-engi\
         ne) Run tests declaratively with a few cunning plans"
@@ -31,9 +31,10 @@ model:
         enterprise edition framework"
       - "[shUnit2](https://github.com/kward/shunit2) unit test framework for
         Bourne based shell scripts"
-    tags:
-      - image-hero
-      - image-demo
+    tags: image-demo
+    images:
+      hero: baldrick-pest-hero-512.jpeg
+      demo: baldrick-pest-usage.gif
   github:
     account: flarebyte
     name: baldrick-pest
@@ -51,7 +52,6 @@ model:
       - zod
       - railway
   workflowVersion: 0.3.0
-  workflow-version: 0.3.0
 workflows:
   test:
     title: Test the library

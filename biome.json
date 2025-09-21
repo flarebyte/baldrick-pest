@@ -17,5 +17,19 @@
       "quoteStyle": "single",
       "semicolons": "always"
     }
+  },
+  "files": {
+    "includes": [
+      "src/**/*",
+      "test/**/*",
+      "spec/**/*",
+      "pest-spec/**/*",
+      "*.json",
+      "*.md",
+      ".vscode/*.json",
+      "*.yaml",
+      "*.yml"
+    ],
+    "experimentalScannerIgnores": ["dist/**", "report/**", "temp/**"]
   }
 }
