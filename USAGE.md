@@ -87,24 +87,24 @@ A step represents a single step in a test case for a command line interface
 (CLI) program. Each step has several keys that provide information about the
 step, such as its title, description, and motivation.
 
-| Name                | Type    | Description                                                                          |
-| ------------------- | ------- | ------------------------------------------------------------------------------------ |
-| steps               | array   | A list of steps in a test case                                                       |
-| title (steps)       | string  | A brief summary of the step                                                          |
-| description (steps) | string  | A detailed explanation of the purpose of the step                                    |
-| motivation (steps)  | string  | The reason why this step is necessary                                                |
-| links (steps)       | array   | A list of relevant links related to the step                                         |
-| title (links)       | string  | The title of the linked resource                                                     |
-| url (links)         | string  | The URL of the linked resource                                                       |
-| stdin (steps)       | object  | Specifies input to be passed to the `run` command from the output of another step    |
-| step (stdin)        | integer | The index of the step whose output should be used as input                           |
-| exitCode (stdin)    | string  | The expected exit code of the `run` command                                          |
-| receiving (stdin)   | string  | The method by which input is passed to the `run` command                             |
-| run (steps)         | string  | The shell command to execute for this step                                           |
-| expect (steps)      | object  | The expected outcome of the step                                                     |
-| exitCode (expect)   | string  | The expected exit code of the `run` command                                          |
-| capture (expect)    | string  | The expected output of the `run` command                                             |
-| snapshot (expect)   | string  | A short name used as part of a file name for storing the output of the `run` command |
+| Name                              | Type    | Description                                                                                         |
+| --------------------------------- | ------- | --------------------------------------------------------------------------------------------------- |
+| steps                             | array   | A list of steps in a test case                                                                      |
+| title (steps)                     | string  | A brief summary of the step                                                                         |
+| description (steps)               | string  | A detailed explanation of the purpose of the step                                                   |
+| motivation (steps)                | string  | The reason why this step is necessary                                                               |
+| links (steps)                     | array   | A list of relevant links related to the step                                                        |
+| title (links)                     | string  | The title of the linked resource                                                                    |
+| url (links)                       | string  | The URL of the linked resource                                                                      |
+| stdin (steps)                     | object  | Specifies input to be passed to the `run` command from the output of another step                   |
+| step (stdin)                      | integer | The index of the step whose output should be used as input                                          |
+| exitCode (stdin)                  | string  | The expected exit code of the `run` command                                                         |
+| receiving (stdin)                 | string  | The method by which input is passed to the `run` command                                            |
+| run (steps)                       | string  | The shell command to execute for this step                                                          |
+| expect (steps)                    | object  | The expected outcome of the step                                                                    |
+| exitCode (expect)                 | string  | The expected exit code of the `run` command                                                         |
+| capture (expect)                  | string  | The expected output of the `run` command                                                            |
+| snapshot (expect)                 | string  | A short name used as part of a file name for storing the output of the `run` command                |
 | ignoreTrailingBlankLines (expect) | boolean | Normalize both actual and expected by trimming trailing blank lines and enforcing one final newline |
 
 Example:

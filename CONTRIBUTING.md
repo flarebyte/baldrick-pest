@@ -79,7 +79,7 @@ broth github act
 
 ## Pull Request Process
 
-1.  Make sure that an issue describing the intended code change exists and
+1. Make sure that an issue describing the intended code change exists and
     that this issue has been accepted.
 
 When you are about to do a pull-request:
