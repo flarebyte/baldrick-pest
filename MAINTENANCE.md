@@ -2,31 +2,6 @@
 
 ## Commands
 
-### Run the unit tests with Jest
-
-**Run:** `npx baldrick-broth test jest`
-
-See also:
-
--   [Jest is a JavaScript Testing Framework](https://jestjs.io/)
-
-***
-
-### Run unit tests declaratively
-
-> Run unit tests for pure functions declaratively using YAML files
-
-**Motivation:** Check that the units of code behave as intended
-
-**Run:** `npx baldrick-broth test spec`
-
-See also:
-
--   [Baldrick Zest run tests
-    declaratively](https://github.com/flarebyte/baldrick-zest-engine)
-
-***
-
 ### Run node.js unit tests
 
 > Run traditional unit tests
@@ -38,7 +13,7 @@ See also:
 See also:
 
 -   [JavaScript tests that report results in TAP
-    format](https://nodejs.org/dist/latest-v22.x/docs/api/test.html)
+    format](https://nodejs.org/dist/latest-v18.x/docs/api/test.html)
 
 ***
 
@@ -136,13 +111,10 @@ See also:
 
 -   [TypeDoc converts comments in Typescript into a JSON
     model](https://typedoc.org/)
-
 -   [baldrick-doc-ts produces markdown
     documentation](https://github.com/flarebyte/baldrick-doc-ts)
-
 -   [baldrick-doc-ts produces markdown
     documentation](https://github.com/flarebyte/baldrick-doc-ts)
-
 -   [Package development of Typescript library in ESM
     format](https://github.com/flarebyte/baldrick-dev-ts)
 
@@ -270,5 +242,11 @@ See also:
 keep the model simple
 
 **Run:** `npx baldrick-broth scaffold custom`
+
+***
+
+### Update readme
+
+**Run:** `npx baldrick-broth scaffold readme`
 
 ***

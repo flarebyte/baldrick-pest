@@ -8,23 +8,29 @@ model:
       - Regression tests
   readme:
     highlights:
-      - Test any kind of executable regardless of the programming language it has been created with.
+      - Test any kind of executable regardless of the programming language it
+        has been created with.
       - Tests are written in YAML with a json schema.
       - Regression are checked by making snapshots.
       - Writing tests is quick and easy with auto-completion in vs-code
-      - |
+      - >
         Reports the test results in mocha json.
+
         This makes it easy to integrate with other tools and services that use mocha json as a standard format for test results.
     links:
       - "[Usage ★★](USAGE.md)"
       - "[Overview for the json schema for baldrick pest yaml file](SCHEMA.md)"
-      - "[Json schema for baldrick pest yaml file](spec/snapshots/build-model/get-schema--schema.json)"
+      - "[Json schema for baldrick pest yaml
+        file](spec/snapshots/build-model/get-schema--schema.json)"
     related:
       - "[baldrick-zest-engine](https://github.com/flarebyte/baldrick-zest-engi\
         ne) Run tests declaratively with a few cunning plans"
-      - "[assert sh](https://github.com/lehmannro/assert.sh) test-driven development for bash"
-      - "[bash_unit](https://github.com/pgrange/bash_unit) bash unit testing enterprise edition framework"
-      - "[shUnit2](https://github.com/kward/shunit2) unit test framework for Bourne based shell scripts"
+      - "[assert sh](https://github.com/lehmannro/assert.sh) test-driven
+        development for bash"
+      - "[bash_unit](https://github.com/pgrange/bash_unit) bash unit testing
+        enterprise edition framework"
+      - "[shUnit2](https://github.com/kward/shunit2) unit test framework for
+        Bourne based shell scripts"
     tags:
       - image-hero
       - image-demo
@@ -44,40 +50,20 @@ model:
       - commander
       - zod
       - railway
-  workflowVersion: "0.3.0"
+  workflowVersion: 0.3.0
+  workflow-version: 0.3.0
 workflows:
   test:
     title: Test the library
     description: Test the library for defects
     tasks:
-      jest:
-        title: Run the unit tests with Jest
-        description: Use the Jest framework to run unit test (deprecated)
-        links:
-          - title: Jest is a JavaScript Testing Framework
-            url: https://jestjs.io/
-        main:
-          commands:
-            - title: Test all test files in test folder
-              run: npx baldrick-dev-ts test check
-      spec:
-        title: Run unit tests declaratively
-        description: Run unit tests for pure functions declaratively using YAML files
-        motivation: Check that the units of code behave as intended
-        links:
-          - title: Baldrick Zest run tests declaratively
-            url: https://github.com/flarebyte/baldrick-zest-engine
-        main:
-          commands:
-            - title: Run all baldrick zest files
-              run: node --loader ts-node/esm .baldrick-zest.ts
       unit:
         title: Run node.js unit tests
         description: Run traditional unit tests
         motivation: Test what is not easily covered with zest
         links:
           - title: JavaScript tests that report results in TAP format
-            url: https://nodejs.org/dist/latest-v22.x/docs/api/test.html
+            url: https://nodejs.org/dist/latest-v18.x/docs/api/test.html
         main:
           commands:
             - title: Run unit tests
@@ -163,8 +149,7 @@ workflows:
       cli:
         title: Run client directly
         description: Run the client with ts-node during development
-        motivation:
-          Simulate a CLI app in development without the need to install it
+        motivation: Simulate a CLI app in development without the need to install it
           globally
         main:
           commands:
@@ -225,13 +210,20 @@ workflows:
               run: mkdir -p report
             - name: typedoc
               title: Generate typedoc doc.json
-              run: npx typedoc@latest --json report/doc.json --pretty src/index.ts
+              run: npx typedoc@latest --json report/doc.json --pretty src/index.mts
             - name: api
               title: Generate markdown files for the Api
               run: npx baldrick-doc-ts@latest typedoc --json-source report/doc.json
             - name: ngram
               title: Generate some markdown files with ngram
               run: npx baldrick-doc-ts@latest parse -f internal ngram
+            - name: functions-csv
+              title: Generate csv file with all the functions
+              run: npx baldrick-doc-ts@latest parse --feature functions-csv
+            - name: deps
+              title: Document the npm dependencies
+              run: npx zx
+                https://raw.githubusercontent.com/flarebyte/baldrick-reserve/main/script/npm-dependencies.mjs
             - name: fix
               title: Fix all the markdown files
               run: npx baldrick-dev-ts@latest markdown fix
@@ -263,7 +255,7 @@ workflows:
           commands:
             - name: check
               title: Lint check sources
-              run: npx xo
+              run: npx @biomejs/biome check .
       fix:
         title: Fix static code analysis
         description: Fix problems in Typescript code
@@ -272,7 +264,10 @@ workflows:
           commands:
             - name: fix
               title: Fix source code
-              run: npx xo --fix
+              run: npx @biomejs/biome check --apply .
+            - name: format
+              title: Format source files
+              run: npx @biomejs/biome format . --write
   md:
     title: Markdown documentation
     description: Manage markdown documentation
@@ -291,8 +286,7 @@ workflows:
               run: npx baldrick-dev-ts@latest markdown check -s .github/
       fix:
         title: Fix Markdown files
-        description:
-          Modify the markdown documents to ensure they follow some consistent
+        description: Modify the markdown documents to ensure they follow some consistent
           guidelines
         motivation: Make the markdown documents consistent in style
         main:
@@ -306,14 +300,12 @@ workflows:
     tasks:
       ready:
         title: Ready for publishing
-        description:
-          Run a sequence of commands to check that the library is ready to be
+        description: Run a sequence of commands to check that the library is ready to be
           published
         motivation: Detect quality flaws before pushing the code
         parameters:
           - description: |
               Pull request mode.
-              Run the pest and zest tests.
             flags: -pr, --pull-request
         main:
           commands:
@@ -328,7 +320,7 @@ workflows:
               run: npx baldrick-dev-ts@latest release check
             - name: lint
               title: Check linting
-              run: npx xo
+              run: npx @biomejs/biome check .
             - name: markdown
               title: Check markdown files
               run: npx baldrick-dev-ts@latest markdown check
@@ -340,7 +332,7 @@ workflows:
               run: yarn outdated
             - name: audit
               title: Audit some libraries
-              run: yarn audit --groups dependencies
+              run: yarn audit
             - name: has-pest-files
               title: Check if there are any pest files
               run: find . -type f -name *.pest.yaml
@@ -357,22 +349,6 @@ workflows:
               title: Run the integration pest tests
               if: data.should-run-pest
               run: npx baldrick-broth@latest test pest
-            - name: has-zest-files
-              title: Check if there are any zest files
-              run: find . -type f -name *.zest.yaml
-              onSuccess:
-                - save
-                - silent
-            - a: every-truthy
-              name: should-run-zest
-              title: Is this a PR and is there some zest files
-              values:
-                - data.has-zest-files
-                - runtime.parameters.pullRequest
-            - name: zest
-              title: Run the unit zest tests
-              if: data.should-run-zest
-              run: npx npx baldrick-broth@latest test spec
             - name: rm-report
               title: Remove previous report
               run: rm -f temp/pull_request_relevant.md
@@ -399,8 +375,6 @@ workflows:
                 {{#if _.result-of-audit}}- :heavy_check_mark:{{else}}- :heavy_exclamation_mark:{{/if}} Security audit
 
                 {{#if _.result-of-pest}}- :heavy_check_mark:{{else}}- :heavy_exclamation_mark:{{/if}} Integration tests with baldrick-pest {{#unless _.should-run-pest}}(Not supported yet){{/unless}}
-
-                {{#if _.result-of-zest}}- :heavy_check_mark:{{else}}- :heavy_exclamation_mark:{{/if}} Unit tests with baldrick-zest {{#unless _.should-run-zest}}(Not supported yet){{/unless}}
             - name: write-report
               a: append-to-file
               title: Write the report
@@ -428,8 +402,7 @@ workflows:
               title: Title for the pull request
               description: A short title used for the pull request
               message: Short title describing the pull request
-            - run:
-                gh pr create --title {{escapeSpace _.category}}:{{escapeSpace _.title}}
+            - run: gh pr create --title {{escapeSpace _.category}}:{{escapeSpace _.title}}
                 --body-file temp/pull_request_relevant.md
               title: Create the pull request
       publish:
@@ -502,8 +475,7 @@ workflows:
             - title: Create all github repositories
               run: mkdir -p .github/workflows .github/ISSUE_TEMPLATE
             - title: Github - create bug report form
-              run:
-                npx baldrick-whisker@latest object .github/ISSUE_TEMPLATE/bug_report.yaml
+              run: npx baldrick-whisker@latest object .github/ISSUE_TEMPLATE/bug_report.yaml
                 github:flarebyte:baldrick-reserve:data/ts/bug-report.yaml
             - title: Github - create feature request form
               run: npx baldrick-whisker@latest object
@@ -526,13 +498,11 @@ workflows:
               links:
                 - title: Specify files to ignore in source control
                   url: https://git-scm.com/docs/gitignore
-              run:
-                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+              run: npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/ts/gitignore.hbs
                 .gitignore.sh
             - title: Create .editorconfig
-              run:
-                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+              run: npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/editorconfig.hbs
                 .editorconfig.sh
               links:
@@ -542,15 +512,21 @@ workflows:
               run: npx baldrick-whisker@latest object .vscode/settings.json
                 github:flarebyte:baldrick-reserve:data/ts/vscode-settings.json
                 --no-overwrite
-            - title: Create tsconfig.json
+            - title: Create tsconfig.json (ES2024)
               run: npx baldrick-whisker@latest object tsconfig.json
-                github:flarebyte:baldrick-reserve:data/ts/tsconfig-2021.yaml
+                github:flarebyte:baldrick-tsconfig-es2024:tsconfig.json
             - title: Create .prettierrc.json
               run: npx baldrick-whisker@latest object .prettierrc.json
                 github:flarebyte:baldrick-reserve:data/ts/prettierrc.json
             - title: Create .remarkrc.yml
               run: npx baldrick-whisker@latest object .remarkrc.yml
                 github:flarebyte:baldrick-reserve:data/ts/remarkrc.yml
+            - title: Create Biome configuration
+              run: npx baldrick-whisker@latest object biome.json
+                github:flarebyte:baldrick-reserve:data/ts/biome.json
+              links:
+                - title: Biome (formatter + linter)
+                  url: https://biomejs.dev/
             - title: Create CONTRIBUTING.md with contribution guidelines
               run: npx baldrick-whisker@latest render baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/ts/contributing.hbs
@@ -559,11 +535,6 @@ workflows:
               run: npx baldrick-whisker@latest render baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/code-of-conduct.hbs
                 CODE_OF_CONDUCT.md
-            - title: Create GLOSSARY.md with project vocabulary
-              run: npx baldrick-whisker@latest render
-                github:flarebyte:baldrick-reserve:data/glossary.yaml
-                github:flarebyte:baldrick-reserve:template/glossary.hbs
-                GLOSSARY.md
             - title: Create a starter DECISIONS.md
               run: npx baldrick-whisker@latest render baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/decisions.hbs
@@ -580,9 +551,12 @@ workflows:
               run: npx baldrick-whisker@latest render baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/ts/maintenance.hbs
                 MAINTENANCE.md
+            - title: Create AGENTS.md
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/ts/agents.hbs
+                AGENTS.md
             - title: Create LICENSE
-              run:
-                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+              run: npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
                 github:flarebyte:baldrick-reserve:template/ts/license.hbs
                 LICENSE.md
             - title: Fix markdown
@@ -644,10 +618,18 @@ workflows:
       custom:
         title: Normalize using the custom script
         description: Normalize the project using a custom script for this project
-        motivation:
-          Enable an imperative approach for some of normalisation to keep the
+        motivation: Enable an imperative approach for some of normalisation to keep the
           model simple
         main:
           commands:
             - title: Normalize using the custom script
               run: sh custom-scaffolding.sh
+      readme:
+        title: Update readme
+        description: Updates readme
+        main:
+          commands:
+            - title: Create README.md
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/ts/readme.hbs
+                README.md
