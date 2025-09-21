@@ -1,0 +1,12 @@
+title: Ignore trailing blank lines demo
+cases:
+  normalize-eof:
+    title: Normalizes trailing blank lines for snapshot compare
+    steps:
+      - title: Emit content with trailing blank lines
+        run: |
+          printf line1\nline2\n\n\n
+        expect:
+          capture: stdout
+          snapshot: ignore-trailing.txt
+          ignoreTrailingBlankLines: true

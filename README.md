@@ -12,69 +12,49 @@ status](https://github.com/flarebyte/baldrick-pest/actions/workflows/main.yml/ba
 
 > Cunning regression tests for CLI applications
 
-Run some
+Snapshot-driven acceptance tests for CLI apps defined in YAML.
+
+Snapshot-driven acceptance tests for any CLI.
 
 ![Hero image for baldrick-pest](baldrick-pest-hero-512.jpeg)
 
 Highlights:
 
--   Test any kind of executable regardless of the programming language it
-    has been created with.
+- Test any kind of executable regardless of the programming language it has been created with.
+- Tests are written in YAML with a json schema.
+- Regression are checked by making snapshots.
+- Writing tests is quick and easy with auto-completion in vs-code
+- Reports the test results in mocha json. This makes it easy to integrate with
+  other tools and services that use mocha json as a standard format for test
+  results.
 
--   Tests are written in YAML with a json schema.
-
--   Regression are checked by making snapshots.
-
--   Writing tests is quick and easy with auto-completion in vs-code
-
--   Reports the test results in mocha json. This makes it easy to
-    integrate with other tools and services that use mocha json as a
-    standard format for test results.
-
-![Example of baldrick-pest usage](baldrick-pest-usage.gif "cli")
+![Example of baldrick-pest usage](baldrick-pest-usage.gif "demo")
 
 ## Documentation and links
 
--   [Code Maintenance](MAINTENANCE.md)
-
--   [Code Of Conduct](CODE_OF_CONDUCT.md)
-
--   [Api for baldrick-pest](API.md)
-
--   [Contributing](CONTRIBUTING.md)
-
--   [Glossary](GLOSSARY.md)
-
--   [Diagram for the code base](INTERNAL.md)
-
--   [Vocabulary used in the code base](CODE_VOCABULARY.md)
-
--   [Architectural Decision Records](DECISIONS.md)
-
--   [Contributors](https://github.com/flarebyte/baldrick-pest/graphs/contributors)
-
--   [Dependencies](https://github.com/flarebyte/baldrick-pest/network/dependencies)
-
--   [Usage ★★](USAGE.md)
-
--   [Overview for the json schema for baldrick pest yaml file](SCHEMA.md)
-
--   [Json schema for baldrick pest yaml
-    file](spec/snapshots/build-model/get-schema--schema.json)
+- [Code Maintenance :wrench:](MAINTENANCE.md)
+- [Code Of Conduct](CODE_OF_CONDUCT.md)
+- [Api for baldrick-pest](API.md)
+- [Contributing :busts_in_silhouette: :construction:](CONTRIBUTING.md)
+- [Diagram for the code base :triangular_ruler:](INTERNAL.md)
+- [Vocabulary used in the code base :book:](CODE_VOCABULARY.md)
+- [Architectural Decision Records :memo:](DECISIONS.md)
+- [Contributors :busts_in_silhouette:](https://github.com/flarebyte/baldrick-pest/graphs/contributors)
+- [Dependencies](https://github.com/flarebyte/baldrick-pest/network/dependencies)
+- [Glossary :book:](https://github.com/flarebyte/overview/blob/main/GLOSSARY.md)
+- [Software engineering principles :gem:](https://github.com/flarebyte/overview/blob/main/PRINCIPLES.md)
+- [Overview of Flarebyte.com ecosystem :factory:](https://github.com/flarebyte/overview)
+- [Usage ★★](USAGE.md)
+- [Overview for the json schema for baldrick pest yaml file](SCHEMA.md)
+- [Json schema for baldrick pest yaml
+  file](spec/snapshots/pest-model/get-schema--schema.json)
 
 ## Related
 
--   [baldrick-zest-engine](https://github.com/flarebyte/baldrick-zest-engine)
-    Run tests declaratively with a few cunning plans
-
--   [assert sh](https://github.com/lehmannro/assert.sh) test-driven
-    development for bash
-
--   [bash\_unit](https://github.com/pgrange/bash_unit) bash unit testing
-    enterprise edition framework
-
--   [shUnit2](https://github.com/kward/shunit2) unit test framework for
-    Bourne based shell scripts
+- [baldrick-zest-engine](https://github.com/flarebyte/baldrick-zest-engine) Run tests declaratively with a few cunning plans
+- [assert sh](https://github.com/lehmannro/assert.sh) test-driven development for bash
+- [bash_unit](https://github.com/pgrange/bash_unit) bash unit testing enterprise edition framework
+- [shUnit2](https://github.com/kward/shunit2) unit test framework for Bourne based shell scripts
 
 ## Installation
 

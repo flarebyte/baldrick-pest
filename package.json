@@ -1,7 +1,7 @@
 {
   "name": "baldrick-pest",
   "description": "Cunning regression tests for CLI applications",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "author": {
     "name": "Olivier Huin",
     "url": "https://github.com/olih"
@@ -40,10 +40,9 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json --outDir dist",
+    "build": "tsc --outDir dist",
     "test": "node --test --loader ts-node/esm test/*.test.ts",
-    "cli": "node --loader ts-node/esm src/cli.mts",
-    "spec": "node --loader ts-node/esm .baldrick-zest.ts"
+    "cli": "node --loader ts-node/esm src/cli.mts"
   },
   "dependencies": {
     "chalk": "^5.6.2",
@@ -52,21 +51,15 @@
     "jest-diff": "^30.1.2",
     "winston": "^3.17.0",
     "yaml": "^2.8.1",
-    "zod": "^4.1.8"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
-    "@types/node": "^24.4.0",
-    "baldrick-dev-ts": "^0.17.0",
-    "baldrick-tsconfig-es2021": "^0.5.0",
-    "baldrick-zest-engine": "^0.9.0",
+    "@types/node": "^24.5.2",
+    "baldrick-dev-ts": "^1.0.0",
+    "baldrick-tsconfig-es2024": "^0.5.0",
     "baldrick-zest-mess": "^0.17.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
-  "peerDependencies": {},
-  "xo": {
-    "ignores": [
-      "src/client.ts"
-    ]
-  }
+  "peerDependencies": {}
 }

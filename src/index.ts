@@ -1,1 +1,1 @@
-export {safeParseBuild} from './pest-model.js';
+export { safeParseBuild } from './pest-model.js';

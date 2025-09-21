@@ -37,10 +37,7 @@
                 "description": "A https link to a webpage"
               }
             },
-            "required": [
-              "title",
-              "url"
-            ],
+            "required": ["title", "url"],
             "additionalProperties": false,
             "description": "Info about a link"
           },
@@ -105,26 +102,16 @@
                         },
                         "exitCode": {
                           "type": "string",
-                          "enum": [
-                            "exit 0",
-                            "exit 1 .. n",
-                            "any"
-                          ],
+                          "enum": ["exit 0", "exit 1 .. n", "any"],
                           "default": "any"
                         },
                         "receiving": {
                           "type": "string",
-                          "enum": [
-                            "stdout",
-                            "stderr",
-                            "stdout + stderr"
-                          ],
+                          "enum": ["stdout", "stderr", "stdout + stderr"],
                           "default": "stdout"
                         }
                       },
-                      "required": [
-                        "step"
-                      ],
+                      "required": ["step"],
                       "additionalProperties": false,
                       "description": "Populate from stdout of step"
                     },
@@ -144,6 +131,9 @@
                         "capture": {
                           "$ref": "#/definitions/baldrick-pest-schema/properties/cases/additionalProperties/properties/steps/items/properties/stdin/properties/receiving"
                         },
+                        "ignoreTrailingBlankLines": {
+                          "type": "boolean"
+                        },
                         "snapshot": {
                           "type": "string",
                           "minLength": 1,
@@ -156,19 +146,13 @@
                       "description": "Expectation"
                     }
                   },
-                  "required": [
-                    "title",
-                    "run"
-                  ],
+                  "required": ["title", "run"],
                   "additionalProperties": false,
                   "description": "Configuration for the batch shell script"
                 }
               }
             },
-            "required": [
-              "title",
-              "steps"
-            ],
+            "required": ["title", "steps"],
             "additionalProperties": false,
             "description": "Configuration for the use case"
           },
@@ -179,10 +163,7 @@
           }
         }
       },
-      "required": [
-        "title",
-        "cases"
-      ],
+      "required": ["title", "cases"],
       "additionalProperties": false,
       "description": "A list of tests that run shells commands"
     }

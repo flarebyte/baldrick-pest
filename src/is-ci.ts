@@ -1,3 +1,6 @@
 import process from 'node:process';
 
-export const isCi = Boolean(process.env['CI'] ?? process.env['BUILD_NUMBER'] ?? false);
+// biome-ignore lint/complexity/useLiteralKeys: process.env requires bracket syntax with TS index signatures
+export const isCi = Boolean(
+  process.env['CI'] ?? process.env['BUILD_NUMBER'] ?? false,
+);
