@@ -24,6 +24,7 @@ import type { ReportTracker } from './reporter-model.js';
 import type { PestFileSuiteOpts, TestingRunOpts } from './run-opts-model.js';
 import { checkSnapshot } from './snapshot-creator.js';
 import { readSnapshotFile } from './snapshot-io.js';
+import { normalizeEof } from './text-normalize.js';
 
 const createReportTracker = (): ReportTracker => ({
   stats: {
@@ -76,16 +77,7 @@ const checkExpectationAndSnapshot = async (parameters: {
     return fail({ message: 'No actual defined', actual: '', expected: '' });
   }
 
-  const normalizeEof = (text: string): string => {
-    // Remove trailing blank lines (lines that are empty or whitespace only) and ensure a single final newline
-    const lines = text.replace(/\r\n/g, '\n').split('\n');
-    let end = lines.length - 1;
-    while (end >= 0 && /^\s*$/.test(lines[end] ?? '')) {
-      end -= 1;
-    }
-    const trimmed = lines.slice(0, end + 1).join('\n');
-    return `${trimmed}\n`;
-  };
+  // Normalization moved to a utility (text-normalize.ts)
 
   const snapshotFileName = getSnapshotFilename(
     opts,

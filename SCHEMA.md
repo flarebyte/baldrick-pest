@@ -63,5 +63,7 @@
 
             -   ◆ capture (string): \_
 
+            -   ◆ ignoreTrailingBlankLines (boolean): Normalize both actual and expected by trimming trailing blank lines and enforcing one final newline
+
             -   ◆ snapshot (string): A short name that can used as part
                 of a file name including the extension

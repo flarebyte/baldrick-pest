@@ -45,6 +45,10 @@ cases:
         run: cat LICENSE
         expect:
           snapshot: license.txt
+          # Optional normalization: ignore trailing blank lines/newlines at EOF
+          # during comparison to avoid false diffs on whitespace-only changes.
+          # Default: false (no normalization)
+          ignoreTrailingBlankLines: true
 ```
 
 ## Cases
@@ -101,6 +105,7 @@ step, such as its title, description, and motivation.
 | exitCode (expect)   | string  | The expected exit code of the `run` command                                          |
 | capture (expect)    | string  | The expected output of the `run` command                                             |
 | snapshot (expect)   | string  | A short name used as part of a file name for storing the output of the `run` command |
+| ignoreTrailingBlankLines (expect) | boolean | Normalize both actual and expected by trimming trailing blank lines and enforcing one final newline |
 
 Example:
 
